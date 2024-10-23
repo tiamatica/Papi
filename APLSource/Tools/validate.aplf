@@ -1,0 +1,9 @@
+ validate;missing;msg
+ :Access Public Instance
+ missing←~(∆propertyNames∊∆schema.required)/isSet
+ :If ∨/missing
+     msg←'Required field(s) missing: ',1↓∊',',¨missing/∆schema.required
+     msg ⎕SIGNAL 6
+ :ElseIf ∨/isSet
+     {}(isSet/∆properties)validateField¨↓isSet⌿∆propertyNames,⍪fieldValues
+ :EndIf

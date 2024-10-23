@@ -1,0 +1,15 @@
+ ResolveRef←{
+⍝ ⍺: obj, root schema
+⍝ ⍵: obj, content object
+⍝ ←: obj, schema for reference
+     schema←{
+         ctnm←↑⍵.⎕NL ¯9
+         ctnm≡'schema':⍵.schema
+         ct←⍵⍎ctnm
+         9=ct.⎕NC'schema':ct.schema
+         schema⊣(schema←⎕NS'').type←''
+     }⍵
+     0=schema.⎕NC'⍙⍙36⍙ref':schema
+     p←'/'(≠⊆⊢)schema.⍙⍙36⍙ref
+     (,'#')≡↑p:⍺⍎1↓∊'.',¨0(7162⌶)¨1↓p
+ }

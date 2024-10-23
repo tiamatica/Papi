@@ -1,0 +1,37 @@
+ r←CompileObject(obj name);propnames
+ r←⍬
+ r,←⊂':Class ',name
+ r,←⊂':Include #.OpenAPI.Tools'
+ r,←⊂''
+ r,←⊂'    :Field Private Shared ∆schema←⎕JSON ',Quote ⎕JSON obj
+ r,←⊂'    :Field Private Shared ∆propertyNames←∆schema.properties.⎕NL ¯9'
+ r,←⊂'    :Field Private Shared ∆properties←∆schema.properties.⍎¨∆propertyNames'
+ r,←⊂''
+ r,←⊂'    :Field Private Instance fieldValues'
+ r,←⊂'    :Field Private Instance isSet'
+ r,←⊂''
+ r,←⊂'     ∇ make0'
+ r,←⊂'      :Access Public Instance'
+ r,←⊂'      :Implements Constructor'
+ r,←⊂'      fieldValues←defaultValue¨∆properties'
+ r,←⊂'      isSet←(≢∆properties)⍴0'
+ r,←⊂'     ∇'
+ r,←⊂''
+ propnames←obj.properties.⎕NL ¯9
+ r,←⊂'    :Property Simple ',(1↓∊',',¨propnames)
+ r,←⊂'    :Access Public Instance'
+ r,←⊂'        ∇ r←get args'
+ r,←⊂'          r←(∆propertyNames⍳⊂args.Name)⊃fieldValues'
+ r,←⊂'        ∇'
+ r,←⊂'        ∇ set args;schema;ind;value'
+ r,←⊂'          ind←∆propertyNames⍳⊂args.Name'
+ r,←⊂'          schema←ind⊃∆properties'
+ r,←⊂'          value←schema validateField args.(Name NewValue)'
+ r,←⊂'          (ind⊃fieldValues)←value'
+ r,←⊂'          (ind⊃isSet)←1'
+ r,←⊂'        ∇'
+ r,←⊂'    :EndProperty'
+ r,←⊂''
+ r,←⊂':EndClass ⍝ ',name
+
+⍝

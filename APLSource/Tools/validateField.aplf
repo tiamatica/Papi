@@ -1,0 +1,31 @@
+ r←schema validateField(name value);b;v;msg
+ r←value
+ msg←'Validation error for field [',name,']: '
+ :If 0≠schema.⎕NC'type'
+ :AndIf schema.type≡'string'
+     :If 2=schema.⎕NC'format'
+     :AndIf schema.format≡'date'
+     :AndIf 0=≢'^\d{4}-\d\d-\d\d$'⎕S'\0'⊢⍕value
+         (msg,'Date must be in format YYYY-MM-DD')⎕SIGNAL 11
+     :EndIf
+     r←,⍕value
+ :ElseIf 0≠schema.⎕NC'anyOf'
+ :AndIf schema.anyOf.type≡'number' 'string'
+     :If 0=10|⎕DR value
+         b v←⎕VFI value
+         :If b≡,1
+             r←↑v
+         :Else
+             (msg,'Not a valid number')⎕SIGNAL 11
+         :EndIf
+     :ElseIf 326=⎕DR value
+         (msg,'Not a valid number')⎕SIGNAL 11
+     :EndIf
+     :If 2=schema.⎕NC'minimum'
+     :AndIf r<schema.minimum
+         (msg,'Minimum value is: ',⍕schema.minimum)⎕SIGNAL 11
+     :ElseIf 2=schema.⎕NC'maximum'
+     :AndIf r>schema.maximum
+         (msg,'Maximum value is: ',⍕schema.maximum)⎕SIGNAL 11
+     :EndIf
+ :EndIf

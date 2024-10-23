@@ -1,0 +1,17 @@
+ r←defaultValue schema
+ :If 0≠schema.⎕NC'type'
+     :If schema.type≡'string'
+         r←''
+     :ElseIf schema.type≡'boolean'
+         r←⊂'false'
+     :ElseIf schema.type≡'array'
+         r←⍬
+     :Else
+         ∘∘∘
+     :EndIf
+ :ElseIf 0≠schema.⎕NC'anyOf'
+ :AndIf schema.anyOf.type≡'number' 'string'
+     r←0
+ :Else
+     ∘∘∘
+ :EndIf
