@@ -1,3 +1,6 @@
  r←required
  :Access Public Instance
- r←∆schema.required
+ r←⍬
+ :If 0≠∆schema.⎕NC'required'
+     r←∆schema.required
+ :EndIf

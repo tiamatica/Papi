@@ -1,16 +1,11 @@
- r←clt execute(command cmdObj args);qp;qpmask;urlmask;mask;res;paramscnt;paramnames;hasParams;hasReqBody;in;rc;resp;csrf;payload;etag
+ r←clt execute(command cmdObj args);qp;qpmask;urlmask;mask;res;paramscnt;paramnames;hasParams;hasReqBody;in;rc;resp;csrf;etag;payload
 ⍝clt:  obj, HttpClient instance
 RETRY:
  clt.Command←command
  clt.URL←∆url
  hasParams hasReqBody←0≠cmdObj.⎕NC'parameters' 'requestBody'
  :If hasParams<hasReqBody
-     :If 9.2=⎕NC⊂'args'
-     :AndIf ¯3.1=args.⎕NC⊂'toObject'
-         clt.Params←args.toObject
-     :Else
-         clt.Params←args
-     :EndIf
+     clt.Params←checkPayload args
  :ElseIf hasParams
      paramscnt←hasReqBody+≢cmdObj.parameters
      qp←paramscnt↑args,paramscnt⍴⊂''
@@ -26,7 +21,7 @@ RETRY:
          clt.Params←mask⌿paramnames,⍪qp
      :ElseIf hasReqBody
          payload←(in⍳⊂'body')⊃qp
-         clt.Params←payload
+         clt.Params←checkPayload payload
          :If command≡'patch'
          :AndIf 2=⎕NC'payload.__metadata.etag'
              'If-Match'clt.SetHeader payload.__metadata.etag
@@ -44,7 +39,7 @@ RETRY:
      :If 0<≢etag←res.GetHeader'ETag'
          'If-Match'clt.SetHeader etag
      :EndIf
- :ElseIf res.Data≡'CSRF token validation failed'
+ :ElseIf 'Required'≡res.GetHeader'x-csrf-token' ⍝res.Data≡'CSRF token validation failed'
      'x-csrf-token'clt.SetHeader'fetch'
      rc resp←clt Get(-hasReqBody)↓args
  :AndIf rc=0

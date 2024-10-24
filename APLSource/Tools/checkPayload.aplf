@@ -1,0 +1,10 @@
+ r←checkPayload payload;externalVars
+ :If 9.2=⎕NC⊂'payload'
+ :AndIf ¯3.1=payload.⎕NC⊂'toObject'
+     :If 0≠≢externalVars←payload.⎕NL 2
+         ⎕←'Warning, unrecognised property found: ',⍤1⊢externalVars
+     :EndIf
+     r←payload.toObject
+ :Else
+     r←payload
+ :EndIf
