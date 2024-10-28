@@ -31,7 +31,7 @@
          :EndIf
          args←cmdObj.parameters,reqBody
          f,←⊂'⍝args: mv,  parameters, vector of shape ',⍕(≢args)
-         f,←1↓¨↓⍕⊃(⍕¨⍳≢args){
+         f,←1↓¨↓⍕↑(⍕¨⍳≢args){
              paramschema←schema ResolveRef ⍵
              aplType←('integer' 'string' 'boolean' 'array' 'object'⍳⊂paramschema.type)⊃'ns' 'cv' 'bs' 'mv' 'obj' 'obj'
              desc←{6::'' ⋄ ',',⍵.description~⎕UCS 10 13}⍵
