@@ -14,7 +14,7 @@
      :If 0=10|⎕DR value
          b v←⎕VFI value
          :If b≡,1
-             r←↑v
+             r←⊃v
          :Else
              (msg,'Not a valid number')⎕SIGNAL 11
          :EndIf

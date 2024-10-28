@@ -3,7 +3,7 @@
 ⍝ ⍵: obj, content object
 ⍝ ←: obj, schema for reference
      schema←{
-         ctnm←↑⍵.⎕NL ¯9
+         ctnm←⊃⍵.⎕NL ¯9
          ctnm≡'schema':⍵.schema
          ct←⍵⍎ctnm
          9=ct.⎕NC'schema':ct.schema
@@ -11,5 +11,5 @@
      }⍵
      0=schema.⎕NC'⍙⍙36⍙ref':schema
      p←'/'(≠⊆⊢)schema.⍙⍙36⍙ref
-     (,'#')≡↑p:⍺⍎1↓∊'.',¨0(7162⌶)¨1↓p
+     (,'#')≡⊃p:⍺⍎1↓∊'.',¨0(7162⌶)¨1↓p
  }

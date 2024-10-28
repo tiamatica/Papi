@@ -1,6 +1,6 @@
  targetdir Compile openapidir;schema;paths;path;pathName;name;schemaFiles;schemaFile;baseUrl;url;pathObj;lines;reqBody;args;ns;nsname;cmdns;svcdir;compnames;compname;compsdir;compdir;compobj;pathsdir;msg
 ⍝ Compile OpenAPI schemas and generate APL code
- targetdir,←('\/'∊⍨↑⌽targetdir)↓'/'
+ targetdir,←('\/'∊⍨⊃⌽targetdir)↓'/'
  schemaFiles←↑⎕NINFO⍠1⊢openapidir,'/*.json'
  :For schemaFile :In schemaFiles
      nsname←'-(.)'⎕R'\u1'⊢'-',1⊃⎕NPARTS schemaFile

@@ -1,5 +1,5 @@
  r←getComponent content;comppath;ref
- ref←content.(⍎↑⎕NL ¯9).schema.⍙⍙36⍙ref
+ ref←content.(⍎⊃⎕NL ¯9).schema.⍙⍙36⍙ref
  comppath←'.'@('/'∘=)'_'@('-'∘=)ref
  :If '#.'≡2↑comppath
      r←⎕THIS.##.##.⍎2↓comppath
