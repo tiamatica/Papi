@@ -3,7 +3,7 @@
  targetdir,←('\/'∊⍨⊃⌽targetdir)↓'/'
  schemaFiles←⊃⎕NINFO⍠1⊢openapidir,'/*.json'
  :For schemaFile :In schemaFiles
-     nsname←'-(.)'⎕R'\u1'⊢'-',1⊃⎕NPARTS schemaFile
+     nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
      svcdir←targetdir,nsname
      3 ⎕MKDIR svcdir
      schema←⎕JSON⊃⎕NGET schemaFile
