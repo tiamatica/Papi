@@ -1,6 +1,6 @@
  r←toObject
  :Access Public Instance
- r←(↑⎕RSI).⎕NS ⍬
+ r←(⊃⎕RSI).⎕NS ⍬
  :If ∨/isSet
      (isSet/∆propertyNames)r.{⍎⍺,'←⍵'}¨isSet/fieldValues
  :EndIf
