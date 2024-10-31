@@ -41,7 +41,7 @@
      r,←⊂'    :Access Public Instance'
      r,←⊂'        ∇ r←get args;ind'
      r,←⊂'          ind←∆propertyNames⍳⊂¯3↓args.Name'
-     r,←⊂'          r←(↑⎕RSI).⎕NEW getComponent(ind⊃∆properties).items'
+     r,←⊂'          r←(⊃⎕RSI).⎕NEW getComponent(ind⊃∆properties).items'
      r,←⊂'          (ind⊃fieldValues),←r'
      r,←⊂'          (ind⊃isSet)←1'
      r,←⊂'        ∇'
