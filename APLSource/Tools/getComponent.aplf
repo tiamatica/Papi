@@ -1,8 +1,13 @@
- r←getComponent content;comppath;ref
- ref←content.(⍎⊃⎕NL ¯9).schema.⍙⍙36⍙ref
+ r←getComponent content;comppath;ref;root
+ ref←{
+     2=⍵.⎕NC'⍙⍙36⍙ref':⍵.⍙⍙36⍙ref
+     ⍵.(⍎⊃⎕NL ¯9).schema.⍙⍙36⍙ref
+ }content
  comppath←'.'@('/'∘=)'_'@('-'∘=)ref
  :If '#.'≡2↑comppath
-     r←⎕THIS.##.##.⍎2↓comppath
+     root←⊃'^(.+\.)(?:components|paths)'⎕S'\1'⊢⍕(⊃⊃⎕CLASS ⎕THIS)
+ :AndIf 0≠≢root
+     r←⍎root,2↓comppath
  :EndIf
 
 ⍝

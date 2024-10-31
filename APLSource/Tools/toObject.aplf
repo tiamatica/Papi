@@ -1,6 +1,12 @@
- r←toObject
+ r←toObject;values
  :Access Public Instance
  r←(⊃⎕RSI).⎕NS ⍬
  :If ∨/isSet
-     (isSet/∆propertyNames)r.{⍎⍺,'←⍵'}¨isSet/fieldValues
+     values←{
+         326≠⎕DR ⍵:⍵
+         (0=⍴⍴⍵)∧(9.2≠⎕NC⊂,'⍵'):⍵
+         ∧/0≠⍵.(⎕NC⊂'toObject'):⍵.toObject
+         ∇¨⍵
+     }¨isSet/fieldValues
+     (isSet/∆propertyNames)r.{⍎⍺,'←⍵'}¨values
  :EndIf
