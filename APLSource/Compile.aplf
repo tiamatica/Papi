@@ -7,31 +7,35 @@
      svcdir←targetdir,nsname
      3 ⎕MKDIR svcdir
      schema←⎕JSON⊃⎕NGET schemaFile
-     compnames←schema.components.schemas.⎕NL ¯9
-     compsdir←svcdir,'/components/schemas/'
-     :For compname :In compnames
-         compdir name←2↑⎕NPARTS'/'@('.'∘=)'_'@('-'∘=)1(7162⌶)compname
-         :If ¯1=⎕NC name
-             ∘∘∘
-         :EndIf
-         3 ⎕MKDIR compsdir,compdir
-         compobj←schema.components.schemas.⍎compname
-         :If ∧/0≠compobj.⎕NC'type' 'properties'
-         :AndIf compobj.type≡'object'
-             lines←CompileObject compobj name
-             (⊂lines)⎕NPUT(compsdir,compdir,name,'.aplc')1
-         :EndIf
-     :EndFor
-     pathsdir←svcdir,'/paths/'
-     3 ⎕MKDIR pathsdir
-     baseUrl←⊃'https?://[^/]*(/.*)'⎕S'\1'⊢⊃schema.servers.url
-     paths←schema.paths.⎕NL ¯9
-     :For pathName :In paths
-         url←baseUrl,path←1(7162⌶)pathName
-         pathObj←schema.paths.⍎pathName
-         name←GenerateNameFromPath path
-         lines←schema CompileService pathObj name url
-         (⊂lines)⎕NPUT(svcdir,'/paths/',name,'.aplc')1
-     :EndFor
+     :If 0≠schema.⎕NC'components'
+         compnames←schema.components.schemas.⎕NL ¯9
+         compsdir←svcdir,'/components/schemas/'
+         :For compname :In compnames
+             compdir name←2↑⎕NPARTS'/'@('.'∘=)'_'@('-'∘=)1(7162⌶)compname
+             :If ¯1=⎕NC name
+                 ∘∘∘
+             :EndIf
+             3 ⎕MKDIR compsdir,compdir
+             compobj←schema.components.schemas.⍎compname
+             :If ∧/0≠compobj.⎕NC'type' 'properties'
+             :AndIf compobj.type≡'object'
+                 lines←CompileObject compobj name
+                 (⊂lines)⎕NPUT(compsdir,compdir,name,'.aplc')1
+             :EndIf
+         :EndFor
+     :EndIf
+     :If 0≠schema.⎕NC'paths'
+         pathsdir←svcdir,'/paths/'
+         3 ⎕MKDIR pathsdir
+         baseUrl←{6::'' ⋄ ⊃⍵.servers.url}schema
+         paths←schema.paths.⎕NL ¯9
+         :For pathName :In paths
+             url←baseUrl,path←1(7162⌶)pathName
+             pathObj←schema.paths.⍎pathName
+             name←GenerateNameFromPath path
+             lines←schema CompileService pathObj name url
+             (⊂lines)⎕NPUT(svcdir,'/paths/',name,'.aplc')1
+         :EndFor
+     :EndIf
  :EndFor
  ⍝
