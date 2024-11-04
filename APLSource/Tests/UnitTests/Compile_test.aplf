@@ -1,9 +1,11 @@
- Compile_test;targetdir;openapidir;schemaname;schema;nsname
+ Compile_test;targetdir;openapidir;schemaname;schema;nsname;msg
 
  ⍝ Test if Compile compiles all schemas
  targetdir←'./APLSource/Tests/TestClasses'
- openapidir←'./APLSource/Tests/TestData'
+ openapidir←'./Testdata'
+ msg←⎕SE.Link.Pause #.OpenAPI
  targetdir(0 Try ##.##.Compile)openapidir
+ msg←⎕SE.Link.Refresh #.OpenAPI
  Assert(≢##.TestClasses.(⎕NL ¯9.1))=≢⊃⎕NINFO⍠1⊢openapidir,'/*.json'
 
  ⍝ Test if all components and paths were compiled into classes
@@ -12,5 +14,3 @@
  schema←⎕JSON⊃⎕NGET openapidir,'/',schemaname,'.json'
  Assert(≢##.TestClasses⍎nsname,'.components.schemas.(⎕NL ¯9.4)')=≢schema.components.schemas.(⎕NL ¯9)
  Assert(≢##.TestClasses⍎nsname,'.paths.(⎕NL ¯9)')=≢schema.paths.(⎕NL ¯9)
-
- 3 ⎕NDELETE targetdir

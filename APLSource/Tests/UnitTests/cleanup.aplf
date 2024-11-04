@@ -1,0 +1,2 @@
+ cleanup
+ 3 ⎕NDELETE'./APLSource/Tests/TestClasses'
