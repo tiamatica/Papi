@@ -1,0 +1,4 @@
+ RunTests
+ cfg←##.Mutsu.NewConfiguration
+ cfg.TestSpaces←UnitTests
+ ##.Mutsu.RunTests cfg
