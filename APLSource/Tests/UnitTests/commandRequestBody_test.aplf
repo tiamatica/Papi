@@ -1,0 +1,22 @@
+ commandRequestBody_test;oaddir;schemaFiles;schemaFile;nsname;schema;count_reqbods;count_functions;inst;reqbody
+
+ ⍝ Compare count of request bodies in OAD with count of functions to get a request body in generated classes.
+ oaddir←'./Testdata'
+ schemaFiles←⊃⎕NINFO⍠1⊢oaddir,'/*.json'
+ :For schemaFile :In schemaFiles
+     nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
+     schema←⎕JSON⊃⎕NGET schemaFile
+     count_reqbods←+⌿∊{6::0 ⋄ ⍵.paths.(⍎¨⎕NL ¯9).(⍎¨⎕NL ¯9).(0≠⎕NC'requestBody')}schema
+     count_functions←+⌿{6::0 ⋄ ⍵.paths.(⍎¨⎕NL ¯9).(≢'RequestBody$'⎕S'%'⊢⎕NL ¯3)}##.TestClasses⍎nsname
+     Assert count_reqbods=count_functions
+ :EndFor
+
+ ⍝ Request body with ref
+ inst←⎕NEW ##.TestClasses.PetstoreExpanded.paths.Pets
+ reqbody←inst.PostRequestBody
+ Assert 9.2=⎕NC⊂'reqbody'
+
+ ⍝ Request body with properties
+ inst←⎕NEW ##.TestClasses.Reqres.paths.Login
+ reqbody←inst.PostRequestBody
+ Assert 9.1=⎕NC⊂'reqbody'
