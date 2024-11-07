@@ -6,6 +6,8 @@
          r←⊂'false'
      :ElseIf schema.type≡'array'
          r←⍬
+     :ElseIf schema.type≡'integer'
+        r←0
      :Else
          ∘∘∘
      :EndIf
