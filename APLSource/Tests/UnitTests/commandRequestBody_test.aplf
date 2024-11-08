@@ -1,4 +1,4 @@
- commandRequestBody_test;oaddir;schemaFiles;schemaFile;nsname;schema;count_reqbods;count_functions;inst;reqbody
+ commandRequestBody_test;oaddir;schemaFiles;schemaFile;nsname;schema;count_reqbods;count_functions;inst;reqbody;namespaces;ns;endpoints;ep;funcs
 
  ⍝ Compare count of request bodies in OAD with count of functions to get a request body in generated classes.
  oaddir←'./Testdata'
@@ -9,6 +9,19 @@
      count_reqbods←+⌿∊{6::0 ⋄ ⍵.paths.(⍎¨⎕NL ¯9).(⍎¨⎕NL ¯9).(0≠⎕NC'requestBody')}schema
      count_functions←+⌿{6::0 ⋄ ⍵.paths.(⍎¨⎕NL ¯9).(≢'RequestBody$'⎕S'%'⊢⎕NL ¯3)}TestClasses⍎nsname
      Assert count_reqbods=count_functions
+ :EndFor
+
+ ⍝ Can the commandRequestBody functions be called for each endpoint without crashing.
+ namespaces←TestClasses.(⍎¨⎕NL ¯9)
+ namespaces/⍨←namespaces.(⊃9=⎕NC'paths')
+ :For ns :In namespaces
+     endpoints←{0≠≢ep←⍵.paths.(⎕NL ¯9):⍎¨(⊂'⍵.paths.'),¨ep ⋄ ⍬}ns
+     :For ep :In endpoints
+         :If 0<≢funcs←ep.('RequestBody$'⎕S'%'⊢⎕NL ¯3)
+             inst←⎕NEW ep
+             inst(0 Try⍎¨)funcs
+         :EndIf
+     :EndFor
  :EndFor
 
  ⍝ Request body with ref
