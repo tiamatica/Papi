@@ -1,11 +1,18 @@
- r←commandRequestBody cmdObj;hasRef;comp;reqbody;propnames;values
- hasRef←{(2=⍵.⎕NC'⍙⍙36⍙ref')∨2=⍵.(⍎⊃⎕NL ¯9).schema.⎕NC'⍙⍙36⍙ref'}cmdObj.requestBody.content ⍝ Can ref be anywhere else
+ r←commandRequestBody rqbContent;hasRef;comp;reqbody;propnames;values
+ ⍝ TODO, make sure this can handle all request body contents
+ hasRef←{6::0 ⋄ (2=⍵.⎕NC'⍙⍙36⍙ref')∨2=⍵.(⍎⊃⎕NL ¯9).schema.⎕NC'⍙⍙36⍙ref'}rqbContent ⍝ Can ref be anywhere else
  :If hasRef
-     comp←getComponent cmdObj.requestBody.content
+     comp←getComponent rqbContent
      r←(2⊃⎕RSI).⎕NEW comp
- :Else
+ :ElseIf rqbContent.(0≠⎕NC'⍙application⍙47⍙json')
      reqbody←(2⊃⎕RSI).⎕NS ⍬
-     (propnames values)←{(⊂p),⊂defaultValue¨⍵⍎¨p←⍵.⎕NL ¯9}cmdObj.requestBody.content.⍙application⍙47⍙json.schema.properties
+     (propnames values)←{(⊂p),⊂defaultValue¨⍵⍎¨p←⍵.⎕NL ¯9}rqbContent.⍙application⍙47⍙json.schema.properties
      reqbody{⍺.{⍎⍺,'←⍵'}/⍵}¨↓propnames,⍪values
      r←reqbody
+ :ElseIf rqbContent.(0≠⎕NC'⍙multipart⍙47⍙mixed⍙59⍙boundary⍙61⍙request⍙45⍙separator')
+     ∘∘∘
+ :ElseIf rqbContent.(0≠⎕NC'⍙application⍙47⍙octet⍙45⍙stream')
+     ∘∘∘
+ :Else
+     ∘∘∘
  :EndIf
