@@ -1,0 +1,7 @@
+ ns getProperties(propname propobj)
+ :If 'object'≡∊propobj.type
+     ns.{⍵ ⎕NS ⍬}propname
+     (ns⍎propname)getProperties¨↓{n,⍪⍵⍎¨n←⍵.⎕NL ¯9}propobj.properties
+ :Else
+     ns.{⍎⍺,'←⍵'}/propname(defaultValue propobj)
+ :EndIf

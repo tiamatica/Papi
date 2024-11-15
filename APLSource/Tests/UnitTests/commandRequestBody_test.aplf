@@ -1,4 +1,4 @@
- commandRequestBody_test;oaddir;schemaFiles;schemaFile;nsname;schema;count_reqbods;count_functions;inst;reqbody;namespaces;ns;endpoints;ep;funcs
+ commandRequestBody_test;oaddir;schemaFiles;schemaFile;nsname;schema;count_reqbods;count_functions;namespaces;ns;endpoints;ep;inst;reqbody;compinst;funcs
 
  ⍝ Compare count of request bodies in OAD with count of functions to get a request body in generated classes.
  oaddir←'./Testdata'
@@ -27,9 +27,11 @@
  ⍝ Request body with ref
  inst←⎕NEW TestClasses.PetstoreExpanded.paths.Pets
  reqbody←inst.PostRequestBody
- Assert 9.2=⎕NC⊂'reqbody'
+ compinst←⎕NEW TestClasses.PetstoreExpanded.components.schemas.NewPet
+ Assert compinst.(⊃⊃⎕CLASS ⎕THIS)≡reqbody.(⊃⊃⊃⎕CLASS ⎕THIS)
 
  ⍝ Request body with properties
  inst←⎕NEW TestClasses.Reqres.paths.Login
  reqbody←inst.PostRequestBody
  Assert 9.1=⎕NC⊂'reqbody'
+ Assert∧⌿'email' 'password'∊reqbody.⎕NL ¯2
