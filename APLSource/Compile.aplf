@@ -17,6 +17,9 @@
              :EndIf
              3 ⎕MKDIR compsdir,compdir
              compobj←schema.components.schemas.⍎compname
+            :If 0≠compobj.⎕NC'allOf'
+                compobj←AddRefToComp compobj name
+            :EndIf
              :If ∧/0≠compobj.⎕NC'type' 'properties'
              :AndIf compobj.type≡'object'
                  lines←CompileObject compobj name
