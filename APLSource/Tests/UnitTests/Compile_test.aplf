@@ -5,8 +5,6 @@
  Assert(≢TestClasses.(⎕NL ¯9.1))=≢⊃⎕NINFO⍠1⊢openapidir,'/*.json'
 
  ⍝ Test if all components and paths were compiled into classes
- schemaname←'petstore-expanded'
- nsname←'-(.)'⎕R'\u1'⊢'-',schemaname
- schema←⎕JSON⊃⎕NGET openapidir,'/',schemaname,'.json'
- Assert(≢TestClasses⍎nsname,'.components.schemas.(⎕NL ¯9.4)')=≢schema.components.schemas.(⎕NL ¯9)
- Assert(≢TestClasses⍎nsname,'.paths.(⎕NL ¯9)')=≢schema.paths.(⎕NL ¯9)
+ schema←⎕JSON⊃⎕NGET openapidir,'/','petstore-expanded.json'
+ Assert(≢TestClasses.PetstoreExpanded.components.schemas.⎕NL ¯9.4)=≢schema.components.schemas.⎕NL ¯9
+ Assert(≢TestClasses.PetstoreExpanded.paths.⎕NL ¯9)=≢schema.paths.⎕NL ¯9
