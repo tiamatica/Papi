@@ -1,0 +1,12 @@
+ newobj←CombineAllof(obj name);refobjs;refmask;refnames;refpaths
+
+ refmask←∊0≠obj.allOf.(⎕NC'⍙⍙36⍙ref')
+ refnames←(refmask/obj.allOf).⍙⍙36⍙ref
+ refpaths←('.'@('/'∘=)'_'@('-'∘=))¨refnames
+ refobjs←obj.##.##.##⍎¨2↓¨refpaths
+
+ newobj←⊃(obj.allOf/⍨~refmask)
+
+ ⍝ Add properties
+ newobj.required,←⊃,/refobjs.required
+ newobj.properties.{⍎⍺,'←⍵'}/¨⊃,/{↓n,⍪⍵⍎¨n←⍵.⎕NL ¯9}¨refobjs.properties
