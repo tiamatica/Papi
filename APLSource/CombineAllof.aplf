@@ -1,12 +1,15 @@
  newobj←CombineAllof(obj name);refobjs;refmask;refnames;refpaths
 
- refmask←∊0≠obj.allOf.(⎕NC'⍙⍙36⍙ref')
+ refmask←∊obj.allOf.(0≠⎕NC'⍙⍙36⍙ref')
  refnames←(refmask/obj.allOf).⍙⍙36⍙ref
  refpaths←('.'@('/'∘=)'_'@('-'∘=))¨refnames
- refobjs←obj.##.##.##⍎¨2↓¨refpaths
+ refobjs←obj.##.##.##{('#.'≡2↑⍵):⍺⍎2↓⍵}¨refpaths
 
- newobj←⊃(obj.allOf/⍨~refmask)
-
- ⍝ Add properties
- newobj.required,←⊃,/refobjs.required
- newobj.properties.{⍎⍺,'←⍵'}/¨⊃,/{↓n,⍪⍵⍎¨n←⍵.⎕NL ¯9}¨refobjs.properties
+ ⍝ Combine properties if all refs found and there is only one object that is not a ref.
+ :If (1=+⌿~refmask)∧refobjs=⍥≢refnames
+     newobj←⊃obj.allOf/⍨~refmask
+     newobj.required,←⊃,/refobjs.required
+     newobj.properties.{⍎⍺,'←⍵'}/¨⊃,/{↓n,⍪⍵⍎¨n←⍵.⎕NL ¯9}¨refobjs.properties
+ :Else
+     ∘∘∘
+ :EndIf
