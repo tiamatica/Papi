@@ -6,6 +6,12 @@
          r←⊂'false'
      :ElseIf schema.type≡'array'
          r←⍬
+     :ElseIf schema.type≡'integer'
+         r←0
+     :ElseIf schema.type≡'number'
+         r←0
+     :ElseIf schema.type≡'object'
+         r←⍬ ⍝ TODO, what should be default?
      :Else
          ∘∘∘
      :EndIf

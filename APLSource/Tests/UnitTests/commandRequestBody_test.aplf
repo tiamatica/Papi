@@ -1,0 +1,37 @@
+ commandRequestBody_test;oaddir;schemaFiles;schemaFile;nsname;schema;count_reqbods;count_functions;namespaces;ns;endpoints;ep;inst;reqbody;compinst;funcs
+
+ ⍝ Compare count of request bodies in OAD with count of functions to get a request body in generated classes.
+ oaddir←'./Testdata'
+ schemaFiles←⊃⎕NINFO⍠1⊢oaddir,'/*.json'
+ :For schemaFile :In schemaFiles
+     nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
+     schema←⎕JSON⊃⎕NGET schemaFile
+     count_reqbods←+⌿∊{6::0 ⋄ ⍵.paths.(⍎¨⎕NL ¯9).(⍎¨⎕NL ¯9).(0≠⎕NC'requestBody')}schema
+     count_functions←+⌿{6::0 ⋄ ⍵.paths.(⍎¨⎕NL ¯9).(≢'RequestBody$'⎕S'%'⊢⎕NL ¯3)}TestClasses⍎nsname
+     Assert count_reqbods=count_functions
+ :EndFor
+
+ ⍝ Can the commandRequestBody functions be called for each endpoint without crashing.
+ namespaces←TestClasses.(⍎¨⎕NL ¯9)
+ namespaces/⍨←namespaces.(⊃9=⎕NC'paths')
+ :For ns :In namespaces
+     endpoints←{0≠≢ep←⍵.paths.(⎕NL ¯9):⍎¨(⊂'⍵.paths.'),¨ep ⋄ ⍬}ns
+     :For ep :In endpoints
+         :If 0<≢funcs←ep.('RequestBody$'⎕S'%'⊢⎕NL ¯3)
+             inst←⎕NEW ep
+             inst(0 Try⍎¨)funcs
+         :EndIf
+     :EndFor
+ :EndFor
+
+ ⍝ Request body with ref
+ inst←⎕NEW TestClasses.PetstoreExpanded.paths.Pets
+ reqbody←inst.PostRequestBody
+ compinst←⎕NEW TestClasses.PetstoreExpanded.components.schemas.NewPet
+ Assert compinst.(⊃⊃⎕CLASS ⎕THIS)≡reqbody.(⊃⊃⊃⎕CLASS ⎕THIS)
+
+ ⍝ Request body with properties
+ inst←⎕NEW TestClasses.Reqres.paths.Login
+ reqbody←inst.PostRequestBody
+ Assert 9.1=⎕NC⊂'reqbody'
+ Assert∧⌿'email' 'password'∊reqbody.⎕NL ¯2

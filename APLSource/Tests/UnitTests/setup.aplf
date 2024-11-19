@@ -1,0 +1,5 @@
+ setup;targetdir;openapidir
+ targetdir←'./TestClasses'
+ openapidir←'./Testdata'
+ targetdir ##.##.Compile openapidir
+ {}⎕SE.Link.Import targetdir
