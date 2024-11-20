@@ -1,5 +1,6 @@
- setup;targetdir;openapidir
+ setup;targetdir;openapidir;opts;overwrite
  targetdir←'./TestClasses'
  openapidir←'./Testdata'
  targetdir ##.##.Compile openapidir
- {}⎕SE.Link.Import targetdir
+ (opts←⎕NS ⍬).overwrite←1
+ {}opts ⎕SE.Link.Import targetdir
