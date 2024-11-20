@@ -1,0 +1,14 @@
+ RunTestsInContainer;cfg
+
+ cfg←⎕SE.Cider.CreateOpenParms ⍬
+ cfg.batch←1
+ cfg.folder←'.'
+ ⎕SE.Cider.OpenProject cfg
+
+ :Trap 0
+     #.OpenAPI.Tests.RunTests
+ :Else
+     ⎕←↑⎕DM
+     ⎕OFF 1
+ :EndTrap
+ ⎕OFF 0
