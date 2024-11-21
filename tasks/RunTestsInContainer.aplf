@@ -1,0 +1,17 @@
+ RunTestsInContainer;cfg;cfgMutsu
+
+ cfg←⎕SE.Cider.CreateOpenParms ⍬
+ cfg.batch←1
+ cfg.folder←'.'
+ ⎕SE.Cider.OpenProject cfg
+
+ :Trap 0
+     cfgMutsu←#.OpenAPI.Mutsu.NewConfiguration
+     cfgMutsu.TestSpaces←#.OpenAPI.Tests.UnitTests
+     cfgMutsu.ReportType←#.OpenAPI.Mutsu.REPORTTYPE.GITHUB
+     #.OpenAPI.Mutsu.RunTests cfgMutsu
+ :Else
+     ⎕←↑⎕DM
+     ⎕OFF 1
+ :EndTrap
+ ⎕OFF 0
