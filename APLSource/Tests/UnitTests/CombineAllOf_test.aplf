@@ -1,0 +1,4 @@
+ CombineAllOf_test;pet
+ pet←⎕NEW TestClasses.PetstoreExpanded.components.schemas.Pet
+ Assert∧⌿'id' 'name'∊pet.required
+ Assert∧⌿'id' 'name' 'tag'∊pet.⎕NL ¯2

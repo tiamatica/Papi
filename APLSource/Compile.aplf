@@ -11,12 +11,15 @@
          compnames←schema.components.schemas.⎕NL ¯9
          compsdir←svcdir,'/components/schemas/'
          :For compname :In compnames
-             compdir name←2↑⎕NPARTS'/'@('.'∘=)'_'@('-'∘=)1(7162⌶)compname
+             compdir name←2↑⎕NPARTS 1 Tools.translatePath 1(7162⌶)compname
              :If ¯1=⎕NC name
                  ∘∘∘
              :EndIf
              3 ⎕MKDIR compsdir,compdir
              compobj←schema.components.schemas.⍎compname
+             :If 0≠compobj.⎕NC'allOf'
+                 compobj←CombineAllof compobj name
+             :EndIf
              :If ∧/0≠compobj.⎕NC'type' 'properties'
              :AndIf compobj.type≡'object'
                  lines←CompileObject compobj name
