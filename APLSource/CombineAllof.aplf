@@ -1,15 +1,24 @@
- newobj←CombineAllof(obj name);refobjs;refmask;refnames;refpaths
+ newobj←CombineAllof(obj name);refobjs;refmask;refnames;refpaths;reqmask;propmask;sameschemamask
 
- refmask←∊obj.allOf.(0≠⎕NC'⍙⍙36⍙ref')
- refnames←(refmask/obj.allOf).⍙⍙36⍙ref
- refpaths←('.'@('/'∘=)'_'@('-'∘=))¨refnames
- refobjs←obj.##.##.##{('#.'≡2↑⍵):⍺⍎2↓⍵}¨refpaths
+ refmask←obj.allOf.(⊃0≠⎕NC'⍙⍙36⍙ref')
+ refobjs←⍬
+ :If ∨/refmask
+     refnames←(refmask/obj.allOf).⍙⍙36⍙ref
+     refpaths←Tools.translatePath refnames
+     sameschemamask←(2↑¨refpaths)≡¨⊂'#.'
+     refobjs←obj.##.##.##⍎¨2↓¨sameschemamask/refpaths
+ :EndIf
 
  ⍝ Combine properties if all refs found and there is only one object that is not a ref.
- :If (1=+⌿~refmask)∧refobjs=⍥≢refnames
+ :If (1=+⌿~refmask)∧(≢refobjs)=+⌿refmask
      newobj←⊃obj.allOf/⍨~refmask
-     newobj.required,←⊃,/refobjs.required
-     newobj.properties.{⍎⍺,'←⍵'}/¨⊃,/{↓n,⍪⍵⍎¨n←⍵.⎕NL ¯9}¨refobjs.properties
+     (reqmask propmask)←↓⍉↑refobjs.(0≠⎕NC'required' 'properties')
+     :If ∨/reqmask
+         newobj.required←newobj{⍺.(0=⎕NC'required'):⍵ ⋄ ⍺.required,⍵}(reqmask/refobjs).(⊃required)
+     :EndIf
+     :If ∨/propmask
+         (⊂'newobj.properties')⎕NS¨(propmask/refobjs).properties
+     :EndIf
  :Else
      ∘∘∘
  :EndIf
