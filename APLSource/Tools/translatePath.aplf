@@ -1,0 +1,7 @@
+ translatePath←{
+     ⍝ Translate between file path and namespace path.
+     ⍝ ⍵: path ⍺: flag. 0-from nspath to filepath. 1-from filepath to nspath
+     ⍺←0
+     ⍺:('/'@('.'∘=)'_'@('-'∘=))¨⍵
+     ('.'@('/'∘=)'_'@('-'∘=))¨⍵
+ }
