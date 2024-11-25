@@ -1,16 +1,18 @@
- r←clt execute(command cmdObj args);qp;qpmask;urlmask;mask;res;paramscnt;paramnames;hasParams;hasReqBody;in;rc;resp;csrf;etag;payload
+ r←clt execute(command cmdObj args);qp;qpmask;urlmask;mask;res;paramscnt;paramnames;hasParams;hasReqBody;in;rc;resp;csrf;etag;payload;hasSharedParams;paramobjs
 ⍝clt:  obj, HttpClient instance
 RETRY:
  clt.Command←command
  clt.URL←∆url
+ hasSharedParams←0≠cmdObj.##.⎕NC'parameters'
  hasParams hasReqBody←0≠cmdObj.⎕NC'parameters' 'requestBody'
  :If hasParams<hasReqBody
      clt.Params←checkPayload args
- :ElseIf hasParams
-     paramscnt←hasReqBody+≢cmdObj.parameters
+ :ElseIf hasParams∨hasSharedParams
+     paramobjs←(hasParams/cmdObj),hasSharedParams/cmdObj.##
+     paramscnt←+⌿hasReqBody,paramobjs.(≢parameters)
      qp←paramscnt↑args,paramscnt⍴⊂''
-     paramnames←cmdObj.parameters.name,hasReqBody/⊂'requestBody'
-     in←cmdObj.parameters.in,hasReqBody/⊂'body'
+     paramnames←(⊃,/paramobjs.parameters.name),hasReqBody/⊂'requestBody'
+     in←(⊃,/paramobjs.parameters.in),hasReqBody/⊂'body'
      qpmask←in∊⊂'query'
      urlmask←in∊⊂'path'
      :If ∨/urlmask
