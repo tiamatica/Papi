@@ -5,21 +5,21 @@ RETRY:
  clt.URL←∆url
  hasSharedParams←0≠cmdObj.##.⎕NC'parameters'
  hasParams hasReqBody←0≠cmdObj.⎕NC'parameters' 'requestBody'
- :If hasParams<hasReqBody
+ :If (hasParams∨hasSharedParams)<hasReqBody
      clt.Params←checkPayload args
  :ElseIf hasParams∨hasSharedParams
-     paramobjs←(hasParams/cmdObj),hasSharedParams/cmdObj.##
+     paramobjs←(hasParams⌿cmdObj),hasSharedParams⌿cmdObj.##
      paramscnt←+⌿hasReqBody,paramobjs.(≢parameters)
      qp←paramscnt↑args,paramscnt⍴⊂''
-     paramnames←(⊃,/paramobjs.parameters.name),hasReqBody/⊂'requestBody'
-     in←(⊃,/paramobjs.parameters.in),hasReqBody/⊂'body'
+     paramnames←(⊃,⌿paramobjs.parameters.name),hasReqBody⌿⊂'requestBody'
+     in←(⊃,⌿paramobjs.parameters.in),hasReqBody⌿⊂'body'
      qpmask←in∊⊂'query'
      urlmask←in∊⊂'path'
-     :If ∨/urlmask
-         clt.URL←('{',¨,∘'}'¨urlmask/paramnames)⎕R(urlmask/qp)⊢clt.URL
+     :If ∨⌿urlmask
+         clt.URL←('{',¨,∘'}'¨urlmask⌿paramnames)⎕R(⍕urlmask⌿qp)⊢clt.URL
      :EndIf
      mask←qpmask∧~qp∊⊂''
-     :If ∨/mask
+     :If ∨⌿mask
          clt.Params←mask⌿paramnames,⍪qp
      :ElseIf hasReqBody
          payload←(in⍳⊂'body')⊃qp
