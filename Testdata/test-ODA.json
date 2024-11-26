@@ -175,7 +175,20 @@
                 "type": "integer",
                 "format": "int32"
               }
-            }
+            },
+            {
+                "name": "tags",
+                "in": "query",
+                "description": "tags to filter by",
+                "required": false,
+                "style": "form",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
           ],
           "responses": {
             "200": {
@@ -203,18 +216,6 @@
         "delete": {
           "description": "deletes a single anotherthing based on the ID supplied",
           "operationId": "delete AnotherThing",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "description": "ID of thing to delete",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
           "responses": {
             "204": {
               "description": "thing deleted"
