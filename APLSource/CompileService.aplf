@@ -6,7 +6,7 @@
  r,←⊂'    :Field Private Shared ∆url←',Quote url
 
  commands←obj.⎕NL ¯9
- hasSharedParams←0≠obj.⎕NC'parameters'
+ hasSharedParams←⊃0≠obj.⎕NC'parameters'
  :For command :In commands
      cmdObj←obj.⍎command
      (hasRequestBody hasParameters hasSummary hasDescription)←0≠cmdObj.⎕NC'requestBody' 'parameters' 'summary' 'description'
@@ -22,7 +22,7 @@
          f,←⊂'⍝ Description: ',(cmdObj.description~⎕UCS 10)
      :EndIf
      f,←⊂'⍝ clt:  obj, HttpClient instance'
-     :If ∧⌿~hasParameters,hasSharedParams
+     :If ∧/~hasParameters hasSharedParams
          :If hasRequestBody
              f,←⊂'⍝ args: obj, ',{6::'' ⋄ ⍵.description}cmdObj.requestBody
          :Else
@@ -36,7 +36,7 @@
              reqBody.description←{6::'' ⋄ ⍵.description}cmdObj.requestBody
              reqBody.schema←schema ResolveRef cmdObj.requestBody.content
          :EndIf
-         args←∊((hasParameters,hasSharedParams)⌿cmdObj obj).parameters,reqBody
+         args←∊((hasParameters hasSharedParams)/cmdObj obj).parameters,reqBody
          f,←⊂'⍝ args: mv,  parameters, vector of shape ',⍕(≢args)
          f,←1↓¨↓⍕↑(⍕¨⍳≢args){
              paramschema←schema ResolveRef ⍵
