@@ -1,7 +1,7 @@
  r←CompileObject(obj name);propnames;properties;mask
  r←⍬
  r,←⊂':Class ',name
- r,←⊂':Include #.OpenAPI.Tools'
+ r,←⊂':Include #.OpenAPI.Core.Tools'
  r,←⊂''
  r,←⊂'    :Field Private Shared ∆schema←⎕JSON ',Quote ⎕JSON obj
  r,←⊂'    :Field Private Shared ∆propertyNames←∆schema.properties.⎕NL ¯9'
