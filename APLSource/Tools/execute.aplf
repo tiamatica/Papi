@@ -16,7 +16,7 @@ RETRY:
      qpmask←in∊⊂'query'
      urlmask←in∊⊂'path'
      :If ∨/urlmask
-         clt.URL←('{',¨,∘'}'¨urlmask/paramnames)⎕R(⍕urlmask/qp)⊢clt.URL
+         clt.URL←('{',¨,∘'}'¨urlmask/paramnames)⎕R(⍕¨urlmask/qp)⊢clt.URL
      :EndIf
      mask←qpmask∧~qp∊⊂''
      :If ∨/mask
