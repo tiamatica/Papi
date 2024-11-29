@@ -1,0 +1,4 @@
+ importClasses classdir;opts
+ ⍝ classdir: directory with compiled classes.
+ (opts←⎕NS ⍬).overwrite←1
+ opts ⎕SE.Link.Import((⊃⎕NSI),'.classes')classdir

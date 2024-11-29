@@ -4,7 +4,7 @@
  refobjs←⍬
  :If ∨/refmask
      refnames←(refmask/obj.allOf).⍙⍙36⍙ref
-     refpaths←Tools.translatePath refnames
+     refpaths←##.Tools.translatePath refnames
      sameschemamask←(2↑¨refpaths)≡¨⊂'#.'
      refobjs←obj.##.##.##⍎¨2↓¨sameschemamask/refpaths
  :EndIf

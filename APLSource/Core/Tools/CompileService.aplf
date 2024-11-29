@@ -1,7 +1,7 @@
  r←schema CompileService(obj name url);commands;cmdObj;command;reqBody;args;f;hasRequestBody;hasParameters;hasDescription;hasSummary;hasSharedParams
  r←⍬
  r,←⊂':Class ',name
- r,←⊂':Include #.OpenAPI.Core.Tools'
+ r,←⊂':Include ',⍕⎕THIS
  r,←⊂'    :Field Private Shared ∆schema←⎕JSON ',Quote ⎕JSON obj
  r,←⊂'    :Field Private Shared ∆url←',Quote url
 

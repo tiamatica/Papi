@@ -11,18 +11,18 @@
          compnames←schema.components.schemas.⎕NL ¯9
          compsdir←svcdir,'/components/schemas/'
          :For compname :In compnames
-             compdir name←2↑⎕NPARTS 1 Tools.translatePath 1(7162⌶)compname
+             compdir name←2↑⎕NPARTS 1 ##.Tools.translatePath 1(7162⌶)compname
              :If ¯1=⎕NC name
                  ∘∘∘
              :EndIf
              3 ⎕MKDIR compsdir,compdir
              compobj←schema.components.schemas.⍎compname
              :If 0≠compobj.⎕NC'allOf'
-                 compobj←CombineAllof compobj name
+                 compobj←##.Tools.CombineAllof compobj name
              :EndIf
              :If ∧/0≠compobj.⎕NC'type' 'properties'
              :AndIf compobj.type≡'object'
-                 lines←CompileObject compobj name
+                 lines←##.Tools.CompileObject compobj name
                  (⊂lines)⎕NPUT(compsdir,compdir,name,'.aplc')1
              :EndIf
          :EndFor
@@ -35,8 +35,8 @@
          :For pathName :In paths
              url←baseUrl,path←1(7162⌶)pathName
              pathObj←schema.paths.⍎pathName
-             name←GenerateNameFromPath path
-             lines←schema CompileService pathObj name url
+             name←##.Tools.GenerateNameFromPath path
+             lines←schema ##.Tools.CompileService pathObj name url
              (⊂lines)⎕NPUT(svcdir,'/paths/',name,'.aplc')1
          :EndFor
      :EndIf

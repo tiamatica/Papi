@@ -1,8 +1,9 @@
 {
-  api: "",
+  api: "API",
   assets: "",
   description: "Generate APL classes from OpenAPI descriptions of an API. The classes can then be used as a client",
   documentation: "",
+  exclude: "⎕ML.apla,⎕IO.apla",
   files: "",
   group: "tiamatica",
   io: 1,
@@ -19,5 +20,5 @@
   source: "Core",
   tags: "openapi, api",
   userCommandScript: "",
-  version: "0.0.0+16",
+  version: "0.0.0",
 }

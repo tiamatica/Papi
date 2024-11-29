@@ -1,6 +1,6 @@
  setup;targetdir;openapidir;opts;overwrite
  targetdir←'./TestClasses'
  openapidir←'./Testdata'
- targetdir #.OpenAPI.Core.Compile openapidir
+ targetdir #.OpenAPI.Core.API.Compile openapidir
  (opts←⎕NS ⍬).overwrite←1
  {}opts ⎕SE.Link.Import targetdir
