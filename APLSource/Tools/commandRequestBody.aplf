@@ -1,11 +1,9 @@
- r←commandRequestBody rqbContent;comp;reqbody
+ r←commandRequestBody rqbContent;comp
  :If {6::0 ⋄ (2=⍵.⎕NC'⍙⍙36⍙ref')∨2=⍵.(⍎⊃⎕NL ¯9).schema.⎕NC'⍙⍙36⍙ref'}rqbContent
      comp←getComponent rqbContent
      r←(2⊃⎕RSI).⎕NEW comp
  :ElseIf {6::0 ⋄ 0≠⍵.⍙application⍙47⍙json.schema.⎕NC'properties'}rqbContent
-     reqbody←(2⊃⎕RSI).⎕NS ⍬
-     reqbody getProperties¨↓{n,⍪⍵⍎¨n←⍵.⎕NL ¯9}rqbContent.⍙application⍙47⍙json.schema.properties
-     r←reqbody
+     r←(2⊃⎕RSI).⎕NEW⍎(2⊃⎕SI),'Class'
  :Else
      ∘∘∘
  :EndIf

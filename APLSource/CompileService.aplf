@@ -1,4 +1,4 @@
- r←schema CompileService(obj name url);commands;cmdObj;command;reqBody;args;f;hasRequestBody;hasParameters;hasDescription;hasSummary;hasSharedParams
+ r←schema CompileService(obj name url);commands;cmdObj;command;reqBody;args;f;hasRequestBody;hasParameters;hasDescription;hasSummary;hasSharedParams;classname
  r←⍬
  r,←⊂':Class ',name
  r,←⊂':Include #.OpenAPI.Tools'
@@ -24,7 +24,7 @@
      f,←⊂'⍝ clt:  obj, HttpClient instance'
      :If hasParameters⍱hasSharedParams
          :If hasRequestBody
-             f,←⊂'⍝ args: obj, ',{6::'' ⋄ ⍵.description}cmdObj.requestBody
+             f,←⊂'⍝ args: obj, Request body',{6::'' ⋄ ',',⍵.description}cmdObj.requestBody
          :Else
              f,←⊂'⍝ args: bs, dummy'
          :EndIf
@@ -60,6 +60,12 @@
          f,←⊂'r←commandRequestBody ∆schema.',command,'.requestBody.content'
          f,←⊂''
          r,←(⊂'    '),¨(1⌽'∇ ' '∇ ',(¯2+≢f)⍴⊂'  '),¨f
+        :If {6::0 ⋄ 0≠⍵.⍙application⍙47⍙json.schema.⎕NC'properties'}cmdObj.requestBody.content
+            r,←⊂''
+            classname←({(1 ⎕C⊃⍵),1↓⍵}command),'RequestBodyClass'
+            f←CompileObject cmdObj.requestBody.content.⍙application⍙47⍙json.schema,⊂classname
+            r,←(⊂'    '),¨f
+        :EndIf
      :EndIf
  :EndFor
  r,←⊂':EndClass ⍝ ',name

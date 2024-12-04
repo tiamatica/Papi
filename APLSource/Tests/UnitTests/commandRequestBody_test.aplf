@@ -33,5 +33,5 @@
  ⍝ Request body with properties
  inst←⎕NEW TestClasses.Reqres.paths.Login
  reqbody←inst.PostRequestBody
- Assert 9.1=⎕NC⊂'reqbody'
- Assert∧⌿'email' 'password'∊reqbody.⎕NL ¯2
+ compinst←⎕NEW TestClasses.Reqres.paths.Login.PostRequestBodyClass
+ Assert compinst.(⊃⊃⎕CLASS ⎕THIS)≡reqbody.(⊃⊃⊃⎕CLASS ⎕THIS)
