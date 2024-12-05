@@ -1,9 +1,10 @@
- r←commandRequestBody rqbContent;comp
- :If {6::0 ⋄ (2=⍵.⎕NC'⍙⍙36⍙ref')∨2=⍵.(⍎⊃⎕NL ¯9).schema.⎕NC'⍙⍙36⍙ref'}rqbContent
-     comp←getComponent rqbContent
+ r←commandRequestBody body;comp
+ :If 0=10|⎕DR body
+ :AndIf 9.4=⎕NC⊂body
+     r←(2⊃⎕RSI).⎕NEW⍎body
+ :ElseIf {6::0 ⋄ (2=⍵.⎕NC'⍙⍙36⍙ref')∨2=⍵.(⍎⊃⎕NL ¯9).schema.⎕NC'⍙⍙36⍙ref'}body
+     comp←getComponent body
      r←(2⊃⎕RSI).⎕NEW comp
- :ElseIf {6::0 ⋄ 0≠⍵.⍙application⍙47⍙json.schema.⎕NC'properties'}rqbContent
-     r←(2⊃⎕RSI).⎕NEW⍎(2⊃⎕SI),'Class'
  :Else
      ∘∘∘
  :EndIf
