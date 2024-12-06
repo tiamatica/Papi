@@ -1,4 +1,4 @@
- r←CompileObject(obj name);propnames;properties;mask
+ r←CompileObject(obj name);propnames;properties;mask;f;nstdclassmask;classnames
  r←⍬
  r,←⊂':Class ',name
  r,←⊂':Include #.OpenAPI.Tools'
@@ -10,14 +10,18 @@
  r,←⊂'    :Field Private Instance fieldValues'
  r,←⊂'    :Field Private Instance isSet'
  r,←⊂''
+ propnames←obj.properties.⎕NL ¯9
+ properties←obj.properties⍎¨propnames
+ nstdclassmask←{⍵.(0≠⎕NC'type'):⊃⍵.(0≠⎕NC'properties')∧⍵.type≡'object' ⋄ 0}¨properties
+ classnames←nstdclassmask{⍺:⍵,'Class' ⋄ ''}¨propnames
  r,←⊂'     ∇ make0'
  r,←⊂'      :Access Public Instance'
  r,←⊂'      :Implements Constructor'
- r,←⊂'      fieldValues←defaultValue¨∆properties'
+ r,←⊂'      nestedObjnames←',⊃{⍺,' ',⍵}/Quote¨classnames
+ r,←⊂'      fieldValues←defaultValue¨↓∆properties,⍪⊆nestedObjnames'
  r,←⊂'      isSet←(≢∆properties)⍴0'
  r,←⊂'     ∇'
  r,←⊂''
- propnames←obj.properties.⎕NL ¯9
  r,←⊂'    :Property Simple ',(1↓∊',',¨propnames)
  r,←⊂'    :Access Public Instance'
  r,←⊂'        ∇ r←get args'
@@ -48,6 +52,10 @@
      r,←⊂'    :EndProperty'
  :EndIf
  r,←⊂''
+ :If ∨/nstdclassmask
+     f←CompileObject¨↓nstdclassmask⌿properties,⍪classnames
+     r,←¨{(⊂'    '),¨(⊂''),⍵}¨f
+ :EndIf
  r,←⊂':EndClass ⍝ ',name
 
 ⍝
