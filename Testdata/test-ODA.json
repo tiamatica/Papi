@@ -232,6 +232,57 @@
             }
           }
         }
+      },
+      "/nestrqbody": {
+        "post": {
+          "description": "This call creates a new nesrrqbody.  \n\nRequest body should contain an 'object' object which should atleast have a property `name`.\n\r",
+          "operationId": "createNestrqbody",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "space",
+              "schema": {
+                "example": "{{spaceId}}",
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "object": {
+                    "description": "This is description.",
+                    "name": "Name",
+                    "summary": "This is supposed to be a short summary."
+                  }
+                },
+                "schema": {
+                  "properties": {
+                    "object": {
+                      "properties": {
+                        "description": {
+                          "example": "This is description.",
+                          "type": "string"
+                        },
+                        "name": {
+                          "example": "Name",
+                          "type": "string"
+                        },
+                        "summary": {
+                          "example": "This is supposed to be a short summary.",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "components": {

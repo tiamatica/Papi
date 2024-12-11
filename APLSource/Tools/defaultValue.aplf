@@ -1,4 +1,4 @@
- r←defaultValue schema
+ r←defaultValue(schema classname)
  :If 0≠schema.⎕NC'type'
      :If schema.type≡'string'
          r←''
@@ -11,7 +11,11 @@
      :ElseIf schema.type≡'number'
          r←0
      :ElseIf schema.type≡'object'
-         r←⍬ ⍝ TODO, what should be default?
+         :If classname≢''
+             r←⎕NEW⍎classname
+         :Else
+             r←⍬
+         :EndIf
      :Else
          ∘∘∘
      :EndIf
