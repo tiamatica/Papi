@@ -4,3 +4,4 @@
  targetdir ##.##.Compile openapidir
  (opts←⎕NS ⍬).overwrite←1
  {}opts ⎕SE.Link.Import targetdir
+ {}opts ⎕SE.Link.Import'HttpCommand'
