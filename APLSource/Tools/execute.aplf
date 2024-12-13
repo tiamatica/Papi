@@ -20,17 +20,18 @@ RETRY:
      :EndIf
      mask←qpmask∧~qp∊⊂''
      :If ∨/mask
-         clt.Params←mask⌿paramnames,⍪qp
-     :ElseIf hasReqBody
+         clt.URL,←'?',clt.UrlEncode mask⌿paramnames,⍪qp
+     :EndIf
+     :If hasReqBody
          payload←(in⍳⊂'body')⊃qp
          clt.Params←checkPayload payload
          :If command≡'patch'
          :AndIf 2=⎕NC'payload.__metadata.etag'
              'If-Match'clt.SetHeader payload.__metadata.etag
          :EndIf
-     :Else
-         clt.Params←''
      :EndIf
+ :Else
+     clt.Params←''
  :EndIf
  res←clt.Run
  :If res.IsOK

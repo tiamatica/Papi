@@ -43,6 +43,24 @@
         "post": {
           "description": "Creates a new thing. Duplicates are allowed",
           "operationId": "addThing",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "homeId",
+              "schema": {
+                "example": "{{homeId}}",
+                "type": "string"
+              }
+            },
+            {
+              "in": "query",
+              "name": "name",
+              "schema": {
+                "example": "{{name}}",
+                "type": "string"
+              }
+            }
+          ],
           "requestBody": {
             "description": "Thing to add.",
             "required": true,
