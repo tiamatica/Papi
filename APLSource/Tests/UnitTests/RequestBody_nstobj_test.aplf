@@ -1,4 +1,4 @@
- RequestBody_nstobj_test
+ RequestBody_nstobj_test;inst;rqb
  inst←⎕NEW TestClasses.TestODA.paths.Nestrqbody
  rqb←inst.PostRequestBody
  Assert #.OpenAPI.Tests.UnitTests.TestClasses.TestODA.paths.Nestrqbody.PostRequestBodyClass.objectClass≡rqb.object.(⊃⊃⎕CLASS ⎕THIS)
