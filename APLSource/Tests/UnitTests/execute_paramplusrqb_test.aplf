@@ -1,0 +1,16 @@
+ execute_paramplusrqb_test;hc;inst;rqb;name
+
+ ⍝ Post request with two in query parms and a request body
+ hc←HttpCommand.New''
+ inst←⎕NEW TestClasses.TestODA.paths.Thing
+ rqb←inst.PostRequestBody
+ rqb.name←name←'New'
+ hc(0 Try inst.Post)'id7' 'Aname'rqb
+ Assert∨/'/thing?homeId=id7&name=Aname'⍷hc.Show
+ Assert name≡hc.Params.name
+
+ ⍝ Get request with one in query parm and no req body
+ hc←HttpCommand.New''
+ inst←⎕NEW TestClasses.TestODA.paths.AnotherthingKey
+ hc(0 Try inst.Get)3
+ Assert∨/'/anotherthing/?limit=3'⍷hc.Show
