@@ -1,0 +1,16 @@
+ r←multipartmixedRqb requests;NL;boundary;request;payload
+ ⍝ Combines multiple requests into a new request body according to Odata multipart/mixed batch request format.
+ ⍝ requests: an array of requests from HttpCommand.Show
+ ⍝ r: 2 elements, boundary and request body.
+
+ NL←⎕UCS 13 10
+ boundary←50{⍵[?⍺⍴≢⍵]}⎕D,⎕A,⎕C ⎕A
+ payload←''
+ :For request :In requests
+     payload,←'--',boundary,NL
+     payload,←'Content-Type: application/http',NL
+     payload,←request
+ :EndFor
+ payload,←'--',boundary,'--'
+
+ r←boundary payload
