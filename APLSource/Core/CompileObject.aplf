@@ -1,7 +1,8 @@
- r←CompileObject(obj name);propnames;properties;mask;f;nstdclassmask;classnames
+ r←depth CompileObject(toolsdir obj name);propnames;properties;mask;f;nstdclassmask;classnames;toolspath
  r←⍬
  r,←⊂':Class ',name
- r,←⊂':Include #.OpenAPI.Tools'
+ toolspath←(∊depth/⊂'##.'),toolsdir
+ r,←⊂':Include ',toolspath
  r,←⊂''
  r,←⊂'    :Field Private Shared ∆schema←⎕JSON ',Quote ⎕JSON obj
  r,←⊂'    :Field Private Shared ∆propertyNames←∆schema.properties.⎕NL ¯9'
@@ -53,7 +54,8 @@
  :EndIf
  r,←⊂''
  :If ∨/nstdclassmask
-     f←CompileObject¨↓nstdclassmask⌿properties,⍪classnames
+     depth+←1
+     f←depth CompileObject¨↓(⊂toolsdir),nstdclassmask⌿properties,⍪classnames
      r,←¨{(⊂'    '),¨(⊂''),⍵}¨f
  :EndIf
  r,←⊂':EndClass ⍝ ',name

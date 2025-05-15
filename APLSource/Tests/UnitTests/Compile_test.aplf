@@ -2,7 +2,7 @@
 
  ⍝ Test if Compile compiled all schemas in setup
  openapidir←'./Testdata'
- Assert(≢TestClasses.(⎕NL ¯9.1))=≢⊃⎕NINFO⍠1⊢openapidir,'/*.json'
+ Assert(≢TestClasses.(⎕NL ¯9.1)~⊂'_OpenApiTools')=≢⊃⎕NINFO⍠1⊢openapidir,'/*.json'
 
  ⍝ Test if all components and paths were compiled into classes
  schema←⎕JSON⊃⎕NGET openapidir,'/','petstore-expanded.json'

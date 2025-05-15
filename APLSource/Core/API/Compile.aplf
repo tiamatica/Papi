@@ -1,7 +1,8 @@
- targetdir Compile openapidir;schema;paths;path;pathName;name;schemaFiles;schemaFile;baseUrl;url;pathObj;lines;reqBody;args;ns;nsname;cmdns;svcdir;compnames;compname;compsdir;compdir;compobj;pathsdir;msg
-⍝ Compile OpenAPI schemas and generate APL code
+ targetdir Compile openapidir;schema;paths;path;pathName;name;schemaFiles;schemaFile;baseUrl;url;pathObj;lines;reqBody;args;ns;nsname;cmdns;svcdir;compnames;compname;compsdir;compdir;compobj;pathsdir;msg;depth;toolsdir;opts
+ ⍝ Compile OpenAPI schemas and generate APL code
  targetdir,←('\/'∊⍨⊃⌽targetdir)↓'/'
  schemaFiles←⊃⎕NINFO⍠1⊢openapidir,'/*.json'
+ toolsdir←'_OpenApiTools'
  :For schemaFile :In schemaFiles
      nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
      svcdir←targetdir,nsname
@@ -11,18 +12,19 @@
          compnames←schema.components.schemas.⎕NL ¯9
          compsdir←svcdir,'/components/schemas/'
          :For compname :In compnames
-             compdir name←2↑⎕NPARTS 1 Tools.translatePath 1(7162⌶)compname
+             compdir name←2↑⎕NPARTS 1 ##.Tools.translatePath 1(7162⌶)compname
              :If ¯1=⎕NC name
                  ∘∘∘
              :EndIf
              3 ⎕MKDIR compsdir,compdir
              compobj←schema.components.schemas.⍎compname
              :If 0≠compobj.⎕NC'allOf'
-                 compobj←CombineAllof compobj name
+                 compobj←##.CombineAllof compobj name
              :EndIf
              :If ∧/0≠compobj.⎕NC'type' 'properties'
              :AndIf compobj.type≡'object'
-                 lines←CompileObject compobj name
+                 depth←3+''≢compdir
+                 lines←depth ##.CompileObject toolsdir compobj name
                  (⊂lines)⎕NPUT(compsdir,compdir,name,'.aplc')1
              :EndIf
          :EndFor
@@ -35,10 +37,13 @@
          :For pathName :In paths
              url←baseUrl,path←1(7162⌶)pathName
              pathObj←schema.paths.⍎pathName
-             name←GenerateNameFromPath path
-             lines←schema CompileService pathObj name url
+             name←##.GenerateNameFromPath path
+             depth←2
+             lines←depth ##.CompileService pathObj name url schema toolsdir
              (⊂lines)⎕NPUT(svcdir,'/paths/',name,'.aplc')1
          :EndFor
      :EndIf
  :EndFor
- ⍝
+ opts←⎕NS ⍬
+ opts.overwrite←1
+ msg←opts ⎕SE.Link.Export ##.Tools(targetdir,toolsdir)
