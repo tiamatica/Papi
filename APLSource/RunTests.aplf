@@ -1,0 +1,5 @@
+ RunTests debug;cfg
+ cfg←Mutsu.NewConfiguration
+ cfg.TestSpaces←Tests
+ cfg.Debug←debug
+ Mutsu.RunTests cfg

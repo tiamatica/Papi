@@ -1,0 +1,32 @@
+BuildTatinPackage;git_tag;version;root;packagename;parms
+
+⎕IO←⎕ML←1
+{}⎕EX⊃⎕SI
+⎕TRAP←0 'E' '⎕←↑⎕DM,⎕XSI,¨''['',¨(⍕¨⎕LC),¨'']'' ⋄ ⎕OFF 1'
+
+git_tag←2 ⎕NQ '.' 'GetEnvironment' 'TAG_VERSION'
+ :If 0=≢git_tag
+    ⎕←'Git tag not specified. Aborting'
+    ⎕OFF 1
+ :EndIf
+ version←⊃'^v?(\d+\.\d+\.\d+(-[^.]+)?)$'⎕S'\1'⊢git_tag
+ :If 0=≢version
+    ⎕←'Not a valid version number. Aborting'
+    ⎕OFF 1
+ :EndIf
+
+ ⎕←'Build version: ',version
+ root←⊃1 ⎕NPARTS ''
+ ⎕←'Working directory: ',root
+ ⎕WSID←root,'OpenAPI'  
+ ⎕←'Establish Tatin in ⎕SE'
+ ⎕←⎕SE.Tatin.Version
+ ⎕←'Build package'
+ 3 ⎕MKDIR './build'
+ parms←⎕SE.Tatin.CreateBuildParms root
+ parms.targetPath←'./build'
+ parms.version←version
+ packagename←⎕SE.Tatin.BuildPackage parms
+ ⎕←'Built package ',packagename
+
+⎕OFF 0
