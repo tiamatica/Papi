@@ -55,7 +55,7 @@
  r,←⊂''
  :If ∨/nstdclassmask
      depth+←1
-    f←depth CompileObject¨↓(⊂toolsdir),nstdclassmask⌿properties,⍪classnames
+     f←depth CompileObject¨↓(⊂toolsdir),nstdclassmask⌿properties,⍪classnames
      r,←¨{(⊂'    '),¨(⊂''),⍵}¨f
  :EndIf
  r,←⊂':EndClass ⍝ ',name
