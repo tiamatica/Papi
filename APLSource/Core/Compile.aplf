@@ -1,7 +1,8 @@
- targetdir Compile openapidir;schema;paths;path;pathName;name;schemaFiles;schemaFile;baseUrl;url;pathObj;lines;reqBody;args;ns;nsname;cmdns;svcdir;compnames;compname;compsdir;compdir;compobj;pathsdir;msg
+ targetdir Compile openapidir;schema;paths;path;pathName;name;schemaFiles;schemaFile;baseUrl;url;pathObj;lines;reqBody;args;ns;nsname;cmdns;svcdir;compnames;compname;compsdir;compdir;compobj;pathsdir;msg;depth;toolsdir;opts
 ⍝ Compile OpenAPI schemas and generate APL code
  targetdir,←('\/'∊⍨⊃⌽targetdir)↓'/'
  schemaFiles←⊃⎕NINFO⍠1⊢openapidir,'/*.json'
+ toolsdir←'_OpenApiTools'
  :For schemaFile :In schemaFiles
      nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
      svcdir←targetdir,nsname
@@ -22,7 +23,8 @@
              :EndIf
              :If ∧/0≠compobj.⎕NC'type' 'properties'
              :AndIf compobj.type≡'object'
-                 lines←CompileObject compobj name
+                 depth←3+''≢compdir
+                 lines←depth CompileObject compobj name
                  (⊂lines)⎕NPUT(compsdir,compdir,name,'.aplc')1
              :EndIf
          :EndFor
@@ -36,9 +38,12 @@
              url←baseUrl,path←1(7162⌶)pathName
              pathObj←schema.paths.⍎pathName
              name←GenerateNameFromPath path
-             lines←schema CompileService pathObj name url
+             depth←2
+             lines←schema CompileService pathObj name url depth
              (⊂lines)⎕NPUT(svcdir,'/paths/',name,'.aplc')1
          :EndFor
      :EndIf
  :EndFor
- ⍝
+ opts←⎕NS ⍬
+ opts.overwrite←1
+ msg←opts ⎕SE.Link.Export Tools(targetdir,toolsdir)
