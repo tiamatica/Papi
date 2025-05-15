@@ -1,4 +1,4 @@
- r←schema CompileService(obj name url depth);commands;cmdObj;command;reqBody;args;f;hasRequestBody;hasParameters;hasDescription;hasSummary;hasSharedParams;classname;classref;lines;hasNestClass;toolspath
+ r←schema CompileService(obj name url depth toolsdir);commands;cmdObj;command;reqBody;args;f;hasRequestBody;hasParameters;hasDescription;hasSummary;hasSharedParams;classname;classref;lines;hasNestClass;toolspath
  r←⍬
  r,←⊂':Class ',name
  toolspath←(∊depth/⊂'##.'),toolsdir
@@ -54,7 +54,7 @@
          :If hasNestClass←0≠⎕NC'cmdObj.requestBody.content.⍙application⍙47⍙json.schema.properties'
              classname←({(1 ⎕C⊃⍵),1↓⍵}command),'RequestBodyClass'
              depth+←1
-             lines←depth CompileObject cmdObj.requestBody.content.⍙application⍙47⍙json.schema,⊂classname
+             lines←depth CompileObject toolsdir cmdObj.requestBody.content.⍙application⍙47⍙json.schema classname
              classref←'''',classname,''''
          :Else
              classref←'∆schema.',command,'.requestBody.content'

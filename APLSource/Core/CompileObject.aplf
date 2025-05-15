@@ -1,4 +1,4 @@
- r←depth CompileObject(obj name);propnames;properties;mask;f;nstdclassmask;classnames;toolspath
+ r←depth CompileObject(toolsdir obj name);propnames;properties;mask;f;nstdclassmask;classnames;toolspath
  r←⍬
  r,←⊂':Class ',name
  toolspath←(∊depth/⊂'##.'),toolsdir
@@ -55,7 +55,7 @@
  r,←⊂''
  :If ∨/nstdclassmask
      depth+←1
-     f←depth CompileObject¨↓nstdclassmask⌿properties,⍪classnames
+    f←depth CompileObject¨↓(⊂toolsdir),nstdclassmask⌿properties,⍪classnames
      r,←¨{(⊂'    '),¨(⊂''),⍵}¨f
  :EndIf
  r,←⊂':EndClass ⍝ ',name
