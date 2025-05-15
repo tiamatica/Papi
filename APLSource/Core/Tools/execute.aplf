@@ -42,7 +42,7 @@ RETRY:
      :If 0<≢etag←res.GetHeader'ETag'
          'If-Match'clt.SetHeader etag
      :EndIf
- :ElseIf 403=res.HttpStatus ⍝ Assumes it failed because of 'CSRF token validation failed'
+ :ElseIf 403=⊃res.HttpStatus ⍝ Assumes it failed because of 'CSRF token validation failed'
      'x-csrf-token'clt.SetHeader'fetch'
      rc msg resp←clt Get(-hasReqBody)↓args
  :AndIf rc=0
