@@ -1,5 +1,5 @@
  targetdir Compile openapidir;schema;paths;path;pathName;name;schemaFiles;schemaFile;baseUrl;url;pathObj;lines;reqBody;args;ns;nsname;cmdns;svcdir;compnames;compname;compsdir;compdir;compobj;pathsdir;msg;depth;toolsdir;opts
- ⍝ Compile OpenAPI schemas and generate APL code
+⍝ Compile OpenAPI schemas and generate APL code
  targetdir,←('\/'∊⍨⊃⌽targetdir)↓'/'
  schemaFiles←⊃⎕NINFO⍠1⊢openapidir,'/*.json'
  toolsdir←'_OpenApiTools'
@@ -47,3 +47,4 @@
  opts←⎕NS ⍬
  opts.overwrite←1
  msg←opts ⎕SE.Link.Export ##.Tools(targetdir,toolsdir)
+⍝
