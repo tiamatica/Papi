@@ -1,6 +1,6 @@
  validate;missing;msg
  :Access Public Instance
- missing←~(∆propertyNames∊∆schema.required)/isSet
+ missing←~(∆propertyNames∊{6::'' ⋄ ⍵.required}∆schema)/isSet
  :If ∨/missing
      msg←'Required field(s) missing: ',1↓∊',',¨missing/∆schema.required
      msg ⎕SIGNAL 6
