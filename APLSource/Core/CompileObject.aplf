@@ -4,6 +4,8 @@
  toolspath←(∊depth/⊂'##.'),toolsdir
  r,←⊂':Include ',toolspath
  r,←⊂''
+ r,←⊂'    (⎕IO ⎕ML)←1'
+ r,←⊂''
  r,←⊂'    :Field Private Shared ∆schema←⎕JSON ',Quote ⎕JSON obj
  r,←⊂'    :Field Private Shared ∆propertyNames←∆schema.properties.⎕NL ¯9'
  r,←⊂'    :Field Private Shared ∆properties←∆schema.properties.⍎¨∆propertyNames'

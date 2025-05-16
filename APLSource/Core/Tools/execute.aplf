@@ -1,4 +1,4 @@
- r←clt execute(command cmdObj args);qp;qpmask;urlmask;mask;res;paramscnt;paramnames;hasParams;hasReqBody;in;rc;resp;csrf;etag;payload;hasSharedParams;paramobjs
+ r←clt execute(command cmdObj args);qp;qpmask;urlmask;mask;res;paramscnt;paramnames;hasParams;hasReqBody;in;rc;resp;csrf;etag;payload;hasSharedParams;paramobjs;msg
 ⍝clt:  obj, HttpClient instance
 RETRY:
  clt.Command←command
@@ -35,20 +35,22 @@ RETRY:
  :EndIf
  res←clt.Run
  :If res.IsOK
-     r←0(⎕JSON res.Data)
+     r←0 res.HttpStatus(⎕JSON res.Data)
      :If 0<≢csrf←res.GetHeader'x-csrf-token'
          'x-csrf-token'clt.SetHeader csrf
      :EndIf
      :If 0<≢etag←res.GetHeader'ETag'
          'If-Match'clt.SetHeader etag
      :EndIf
- :ElseIf 'Required'≡res.GetHeader'x-csrf-token' ⍝res.Data≡'CSRF token validation failed'
+ :ElseIf 403=⊃res.HttpStatus ⍝ Assumes it failed because of 'CSRF token validation failed'
      'x-csrf-token'clt.SetHeader'fetch'
-     rc resp←clt Get(-hasReqBody)↓args
+     rc msg resp←clt Get(-hasReqBody)↓args
  :AndIf rc=0
      →RETRY
+ :ElseIf res.rc=0
+     r←res.(HttpStatus HttpMessage Data)
  :Else
-     r←res.(HttpStatus HttpMessage)
+     r←res.(rc msg Data)
  :EndIf
  :If command≡'patch'
      clt.RemoveHeader'If-Match'
