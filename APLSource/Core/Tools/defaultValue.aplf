@@ -1,4 +1,4 @@
- r←defaultValue(schema classname)
+ r←defaultValue(schema classname);comp
  :If 0≠schema.⎕NC'type'
      :If schema.type≡'string'
          r←''
@@ -22,6 +22,9 @@
  :ElseIf 0≠schema.⎕NC'anyOf'
  :AndIf schema.anyOf.type≡'number' 'string'
      r←0
+ :ElseIf 0≠schema.⎕NC'⍙⍙36⍙ref'
+     comp←getComponent schema
+     r←⎕NEW comp
  :Else
      ∘∘∘
  :EndIf

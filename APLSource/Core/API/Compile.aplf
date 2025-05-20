@@ -1,4 +1,4 @@
- targetdir Compile openapidir;schema;paths;path;pathName;name;schemaFiles;schemaFile;baseUrl;url;pathObj;lines;reqBody;args;ns;nsname;cmdns;svcdir;compnames;compname;compsdir;compdir;compobj;pathsdir;msg;depth;toolsdir;opts
+ msg←targetdir Compile openapidir;schema;paths;path;pathName;name;schemaFiles;schemaFile;baseUrl;url;pathObj;lines;reqBody;args;ns;nsname;cmdns;svcdir;compnames;compname;compsdir;compdir;compobj;pathsdir;depth;toolsdir;opts
 ⍝ Compile OpenAPI schemas and generate APL code
  targetdir,←('\/'∊⍨⊃⌽targetdir)↓'/'
  schemaFiles←⊃⎕NINFO⍠1⊢openapidir,'/*.json'
@@ -6,7 +6,8 @@
  :For schemaFile :In schemaFiles
      nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
      svcdir←targetdir,nsname
-     3 ⎕MKDIR svcdir
+     3 ⎕NDELETE svcdir
+     2 ⎕MKDIR svcdir
      schema←⎕JSON⊃⎕NGET schemaFile
      :If 0≠schema.⎕NC'components'
          compnames←schema.components.schemas.⎕NL ¯9
@@ -46,5 +47,7 @@
  :EndFor
  opts←⎕NS ⍬
  opts.overwrite←1
- msg←opts ⎕SE.Link.Export ##.Tools(targetdir,toolsdir)
+ {}opts ⎕SE.Link.Export ##.Tools(targetdir,toolsdir)
+ 1 ⎕NDELETE targetdir,toolsdir,'/.linkconfig'
+ msg←'OpenAPI Descriptions compiled into classes in ''',targetdir,''''
 ⍝

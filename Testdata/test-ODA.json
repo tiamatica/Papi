@@ -334,7 +334,10 @@
             },
             "tag": {
               "type": "string"
-            }
+            },
+            "colour": {
+            "$ref": "#/components/schemas/Colour"
+          }
           }
         },
         "AnotherThing": {
@@ -344,6 +347,17 @@
               "type": "string"
             },
             "tag": {
+              "type": "string"
+            }
+          }
+        },
+        "Colour": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "hex": {
               "type": "string"
             }
           }
