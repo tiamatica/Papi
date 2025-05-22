@@ -1,7 +1,8 @@
- r←clt execute(command cmdObj args);qp;qpmask;urlmask;mask;res;paramscnt;paramnames;hasParams;hasReqBody;in;rc;resp;csrf;etag;payload;hasSharedParams;paramobjs;msg
+ r←clt execute(command cmdObj args);qp;qpmask;urlmask;mask;paramscnt;paramnames;hasParams;hasReqBody;in;csrf;etag;payload;hasSharedParams;paramobjs
 ⍝clt:  obj, HttpClient instance
  clt.Command←command
  clt.URL←∆url
+ clt.Params←''
  hasSharedParams←⊃0≠cmdObj.##.⎕NC'parameters'
  hasParams hasReqBody←0≠cmdObj.⎕NC'parameters' 'requestBody'
  :If (hasParams∨hasSharedParams)<hasReqBody
@@ -29,22 +30,15 @@
              'If-Match'clt.SetHeader payload.__metadata.etag
          :EndIf
      :EndIf
- :Else
-     clt.Params←''
  :EndIf
- res←clt.Run
- :If res.IsOK
-     r←0 res.HttpStatus(⎕JSON res.Data)
-     :If 0<≢csrf←res.GetHeader'x-csrf-token'
+ r←clt.Run
+ :If r.IsOK
+     :If 0<≢csrf←r.GetHeader'x-csrf-token'
          'x-csrf-token'clt.SetHeader csrf
      :EndIf
-     :If 0<≢etag←res.GetHeader'ETag'
+     :If 0<≢etag←r.GetHeader'ETag'
          'If-Match'clt.SetHeader etag
      :EndIf
- :ElseIf res.rc=0
-     r←res.(HttpStatus HttpMessage Data)
- :Else
-     r←res.(rc msg Data)
  :EndIf
  :If command≡'patch'
      clt.RemoveHeader'If-Match'
