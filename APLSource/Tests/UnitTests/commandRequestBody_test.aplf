@@ -26,12 +26,12 @@
 
  ⍝ Request body with ref
  inst←⎕NEW TestClasses.PetstoreExpanded.paths.Pets
- reqbody←inst.PostRequestBody
+ reqbody←inst.NewPostRequestBody
  compinst←⎕NEW TestClasses.PetstoreExpanded.components.schemas.NewPet
  Assert compinst.(⊃⊃⎕CLASS ⎕THIS)≡reqbody.(⊃⊃⊃⎕CLASS ⎕THIS)
 
  ⍝ Request body with properties
  inst←⎕NEW TestClasses.Reqres.paths.Login
- reqbody←inst.PostRequestBody
+ reqbody←inst.NewPostRequestBody
  compinst←⎕NEW TestClasses.Reqres.paths.Login.PostRequestBodyClass
  Assert compinst.(⊃⊃⎕CLASS ⎕THIS)≡reqbody.(⊃⊃⊃⎕CLASS ⎕THIS)
