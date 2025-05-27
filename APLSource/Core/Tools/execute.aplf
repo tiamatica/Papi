@@ -34,9 +34,8 @@
  :If ((⊂command)∊'post' 'patch' 'put')∧0=≢clt.Params
      'Content-Length'clt.AddHeader'0'
  :EndIf
- r←clt.Run
- clt.RemoveHeader'Content-Length'
  res←clt.Run
+ clt.RemoveHeader'Content-Length'
  :If res.IsOK
      r←0 res.HttpStatus(⎕JSON res.Data)
      :If 0<≢csrf←res.GetHeader'x-csrf-token'
