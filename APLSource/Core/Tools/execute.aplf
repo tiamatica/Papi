@@ -2,6 +2,7 @@
 ⍝clt:  obj, HttpClient instance
  clt.Command←command
  clt.URL←∆url
+ clt.Params←''
  hasSharedParams←⊃0≠cmdObj.##.⎕NC'parameters'
  hasParams hasReqBody←0≠cmdObj.⎕NC'parameters' 'requestBody'
  :If (hasParams∨hasSharedParams)<hasReqBody
@@ -29,9 +30,12 @@
              'If-Match'clt.SetHeader payload.__metadata.etag
          :EndIf
      :EndIf
- :Else
-     clt.Params←''
  :EndIf
+ :If ((⊂command)∊'post' 'patch' 'put')∧0=≢clt.Params
+     'Content-Length'clt.AddHeader'0'
+ :EndIf
+ r←clt.Run
+ clt.RemoveHeader'Content-Length'
  res←clt.Run
  :If res.IsOK
      r←0 res.HttpStatus(⎕JSON res.Data)
