@@ -3,7 +3,7 @@
  ⍝ Post request with two in query parms and a request body
  hc←HttpCommand.New''
  inst←⎕NEW TestClasses.TestODA.paths.Thing
- rqb←inst.PostRequestBody
+ rqb←inst.NewPostRequestBody
  rqb.name←name←'New'
  hc(0 Try inst.Post)'id7' 'Aname'rqb
  Assert∨/'/thing?homeId=id7&name=Aname'⍷hc.Show
