@@ -24,7 +24,11 @@
      r←0
  :ElseIf 0≠schema.⎕NC'⍙⍙36⍙ref'
      comp←getComponent schema
-     r←⎕NEW comp
+     :If {6::0 ⋄ ⍵.isEnum}comp
+         r←comp.⍎⊃comp.(⎕NL ¯2)~⊂'isEnum'
+     :Else
+         r←⎕NEW comp
+     :EndIf
  :Else
      ∘∘∘
  :EndIf
