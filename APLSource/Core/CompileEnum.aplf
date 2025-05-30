@@ -1,0 +1,18 @@
+ r←CompileEnum(compobj name);enums;value
+ r←⍬
+ r,←⊂':Class ',name
+ r,←⊂''
+ r,←⊂'    (⎕IO ⎕ML)←1'
+ r,←⊂''
+ enums←compobj.enum
+ :For value :In enums
+     :If 0=10|⎕DR value
+        r,←⊂'    :Field Public Shared ReadOnly VALUE_',(1 ⎕C value),' ← ',Quote value
+     :Else
+        r,←⊂'    :Field Public Shared ReadOnly VALUE_',⍕value,' ← ',value
+     :EndIf
+ :EndFor
+ r,←⊂''
+ r,←⊂'    :Field Public Shared ReadOnly isEnum ← 1'
+ r,←⊂''
+ r,←⊂':EndClass ⍝ ',name
