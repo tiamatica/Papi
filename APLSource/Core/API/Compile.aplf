@@ -27,6 +27,9 @@
                  depth←3+''≢compdir
                  lines←depth ##.CompileObject toolsdir compobj name
                  (⊂lines)⎕NPUT(compsdir,compdir,name,'.aplc')1
+             :ElseIf 0≠compobj.⎕NC'enum'
+                 lines←##.CompileEnum compobj name
+                 (⊂lines)⎕NPUT(compsdir,compdir,name,'.aplc')1
              :EndIf
          :EndFor
      :EndIf

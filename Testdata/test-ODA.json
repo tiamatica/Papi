@@ -337,6 +337,9 @@
             },
             "colour": {
             "$ref": "#/components/schemas/Colour"
+          },
+          "countrycode": {
+            "$ref": "#/components/schemas/CountryCodeEnum"
           }
           }
         },
@@ -362,6 +365,11 @@
             }
           }
         },
+        "CountryCodeEnum": {
+        "enum": [
+          "46", "47"        
+        ]
+      },
         "Error": {
           "type": "object",
           "required": ["code", "message"],
