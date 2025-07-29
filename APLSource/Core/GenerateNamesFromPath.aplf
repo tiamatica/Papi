@@ -1,0 +1,8 @@
+ r←GenerateNamesFromPath paths;names;string;pattern
+
+ string←'''(?:[^\r\n'']|'''')*'''
+ pattern←'(\((?:',string,'|[^()'']|(?1))*\))'  ⍝ group: (nested)parens
+ names←'^_?.'⎕R'\u0'⊢'^/'pattern'((/{\w+})+)' '[^A-Za-zÀ-ÖØ-Ýß-öø-üþ∆⍙Ⓐ-Ⓩ0-9]'⎕R'' 'Key' 'Key' '_'⊢⊆paths
+ names←{⊆⊢/⍵⌷⍨⊂⍋⍵}⊃⍪/{1=≢⍵:⊂⍵,⍪⍺ ⋄ ⊂⍵,⍪⍺,¨'_',∘⍕¨⍳≢⍵}⌸names ⍝ add nr suffix for duplicates
+ r←names
+ ⍝

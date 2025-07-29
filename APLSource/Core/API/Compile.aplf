@@ -13,7 +13,7 @@
          compnames←schema.components.schemas.⎕NL ¯9
          compsdir←svcdir,'/components/schemas/'
          :For compname :In compnames
-             compdir name←2↑⎕NPARTS 1 ##.Tools.translatePath 1(7162⌶)compname
+             compdir name←2↑⎕NPARTS 1 ##.Tools.translatePath⊃1 ##.JSONConvertNames compname
              :If ¯1=⎕NC name
                  ∘∘∘
              :EndIf
@@ -34,16 +34,14 @@
          :EndFor
      :EndIf
      :If 0≠schema.⎕NC'paths'
+     :AndIf 0≠≢paths←schema.paths.⎕NL ¯9
          pathsdir←svcdir,'/paths/'
          3 ⎕MKDIR pathsdir
          baseUrl←{6::'' ⋄ ⊃⍵.servers.url}schema
-         paths←schema.paths.⎕NL ¯9
          (pathObjs pathUrls names)←⊂''
-         :If 0≠≢paths
-             pathObjs←schema.paths.⍎¨paths
-             pathUrls←1(7162⌶)¨paths
-             names←##.GenerateNameFromPath pathUrls
-         :EndIf
+         pathObjs←schema.paths.⍎¨paths
+         pathUrls←1 ##.JSONConvertNames paths
+         names←##.GenerateNamesFromPath pathUrls
          :For (name pathUrl pathObj) :In ↓⍉↑names pathUrls pathObjs
              url←baseUrl,pathUrl
              depth←2

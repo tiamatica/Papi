@@ -11,5 +11,5 @@
      }⍵
      0=schema.⎕NC'⍙⍙36⍙ref':schema
      p←'/'(≠⊆⊢)schema.⍙⍙36⍙ref
-     (,'#')≡⊃p:⍺⍎1↓∊'.',¨0(7162⌶)¨1↓p
+    (,'#')≡⊃p:⍺⍎1↓∊'.',¨0 JSONConvertNames 1↓p
  }

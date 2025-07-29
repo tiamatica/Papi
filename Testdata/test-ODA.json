@@ -96,10 +96,10 @@
           }
         }
       },
-      "/thing/(id={id})": {
+      "/thing/{id}": {
         "get": {
           "description": "Returns a thing based on a single ID",
-          "operationId": "find thing by id",
+          "operationId": "findThingById",
           "parameters": [
             {
               "name": "id",
@@ -167,10 +167,10 @@
           }
         }
       },
-      "/thing/(id={id}, age={age})": {
+      "/thing/{id}/{age}": {
         "get": {
           "description": "Returns a thing based on a single ID",
-          "operationId": "find thing by id",
+          "operationId": "findThingByIdAndAge",
           "parameters": [
             {
               "name": "id",
