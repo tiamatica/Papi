@@ -13,7 +13,7 @@
     "paths": {
       "/thing": {
         "get": {
-          "description": "Return all things. No parameters.\n",
+          "description": "Return all things. \r\n\r\n    No parameters.\n",
           "responses": {
             "200": {
               "description": "thing response",
@@ -62,7 +62,7 @@
             }
           ],
           "requestBody": {
-            "description": "Thing to add.",
+            "description": "Thing to add.\r\n\r\nNew line.",
             "required": true,
             "content": {
               "application/json": {
