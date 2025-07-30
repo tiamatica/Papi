@@ -2,3 +2,4 @@ dist
 tatin-dependencies/*/
 tatin-dependencies_dev/*/
 **/.DS_Store
+TestClasses
