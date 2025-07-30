@@ -20,7 +20,7 @@
      :For method :In methods
          :If (⊂pathDecoded method)∊handlers
              r⍪←pathDecoded method((handlers⍳⊂pathDecoded method)⊃fns)'Existed'
-         :ElseIf 1
+         :Else
              methodObj←pathObj.⍎method
              :If 0=methodObj.⎕NC'operationId'
                  operationId←method,pathDecoded
