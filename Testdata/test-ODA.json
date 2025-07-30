@@ -99,7 +99,7 @@
       "/thing/{id}": {
         "get": {
           "description": "Returns a thing based on a single ID",
-          "operationId": "find thing by id",
+          "operationId": "findThingById",
           "parameters": [
             {
               "name": "id",
@@ -160,6 +160,46 @@
                 "application/json": {
                   "schema": {
                     "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/thing/{id}/{age}": {
+        "get": {
+          "description": "Returns a thing based on a single ID",
+          "operationId": "findThingByIdAndAge",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of thing to fetch",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            {
+              "name": "age",
+              "in": "path",
+              "description": "age of thing to fetch",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "thing response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Thing"
                   }
                 }
               }

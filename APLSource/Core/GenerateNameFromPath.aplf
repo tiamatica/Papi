@@ -1,5 +1,0 @@
- r←GenerateNameFromPath path;string;pattern
- string←'''(?:[^\r\n'']|'''')*'''
- pattern←'(\((?:',string,'|[^()'']|(?1))*\))'  ⍝ group: (nested)parens
- r←'^_?.'⎕R'\u0'⊢'^/'pattern'((/{\w+})+)' '[^A-Za-zÀ-ÖØ-Ýß-öø-üþ∆⍙Ⓐ-Ⓩ0-9]'⎕R'' 'Key' 'Key' '_'⊢path
- ⍝
