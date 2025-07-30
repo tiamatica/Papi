@@ -1,4 +1,4 @@
- r←depth CompileService(obj name baseurl path schema toolsdir);commands;cmdObj;command;reqBody;args;f;hasRequestBody;hasParameters;hasDescription;hasSummary;hasSharedParams;classname;classref;lines;hasNestClass;toolspath
+ r←depth CompileService(obj name baseurl path schema toolsdir);commands;cmdObj;command;reqBody;args;f;hasRequestBody;hasParameters;hasSharedParams;classname;classref;lines;hasNestClass;toolspath
  r←⍬
  r,←⊂':Class ',name
  toolspath←(∊depth/⊂'##.'),toolsdir
