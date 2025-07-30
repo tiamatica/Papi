@@ -1,6 +1,8 @@
- CompilePaths(schema svcdir toolsdir);pathsdir;baseUrl;pathObjs;pathUrls;names;name;pathUrl;pathObj;url;depth;lines
+ CompilePaths(schema svcdir toolsdir);paths;pathsdir;baseUrl;pathObjs;pathUrls;names;name;pathUrl;pathObj;url;depth;lines
 ⍝Compile paths section of schema into APL classes
  →(0=schema.⎕NC'paths')/0
+ paths←schema.paths.⎕NL ¯9
+ →(0=≢paths)/0
  pathsdir←svcdir,'/paths/'
  3 ⎕MKDIR pathsdir
  baseUrl←{6::'' ⋄ ⊃⍵.servers.url}schema
