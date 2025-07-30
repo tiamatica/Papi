@@ -1,7 +1,8 @@
  r←clt execute(command cmdObj args);qp;qpmask;urlmask;mask;res;paramscnt;paramnames;hasParams;hasReqBody;in;rc;resp;csrf;etag;payload;hasSharedParams;paramobjs;msg
 ⍝clt:  obj, HttpClient instance
  clt.Command←command
- clt.URL←∆url
+ clt.BaseURL{0=≢⍺:⍵ ⋄ ⍺}←∆baseurl
+ clt.URL←∆path
  clt.Params←''
  hasSharedParams←⊃0≠cmdObj.##.⎕NC'parameters'
  hasParams hasReqBody←0≠cmdObj.⎕NC'parameters' 'requestBody'
