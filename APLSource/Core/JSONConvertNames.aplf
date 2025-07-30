@@ -1,5 +1,0 @@
- r←flag JSONConvertNames names
-⍝ flag 0: convert from JSON to APL name
-⍝ flag 1: convert from APL to JSON name
- names←⊆names
- r←flag(7162⌶)¨names

@@ -1,0 +1,9 @@
+ JsonConvertNames←{
+    ⍝ Converts between APL names and JSON
+    ⍝ ⍺: optional flag. 0: convert from JSON to APL name. 1: convert from APL to JSON name
+    ⍝ ⍵: vector of JSON or APL names to be converted
+
+     names←⊆⍵
+     ⍺←'⍙'=⊃⊃⍵
+     ⊃⍣(1=≢names)⊢⍺(7162⌶)¨names
+ }

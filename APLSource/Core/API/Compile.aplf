@@ -13,7 +13,7 @@
          compnames←schema.components.schemas.⎕NL ¯9
          compsdir←svcdir,'/components/schemas/'
          :For compname :In compnames
-             compdir name←2↑⎕NPARTS 1 ##.Tools.translatePath⊃1 ##.JSONConvertNames compname
+            compdir name←2↑⎕NPARTS 1 ##.Tools.translatePath ##.JsonConvertNames compname
              :If ¯1=⎕NC name
                  ∘∘∘
              :EndIf
@@ -40,7 +40,7 @@
          baseUrl←{6::'' ⋄ ⊃⍵.servers.url}schema
          (pathObjs pathUrls names)←⊂''
          pathObjs←schema.paths.⍎¨paths
-         pathUrls←1 ##.JSONConvertNames paths
+         pathUrls←⊆##.JsonConvertNames paths
          names←##.GenerateNamesFromPath pathUrls
          :For (name pathUrl pathObj) :In ↓⍉↑names pathUrls pathObjs
              url←baseUrl,pathUrl

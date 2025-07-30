@@ -1,4 +1,5 @@
  r←GenerateNamesFromPath paths;names;string;pattern
+ ⍝ Generate unique APL names from vector of paths, removing path patterns and invalid symbols
 
  string←'''(?:[^\r\n'']|'''')*'''
  pattern←'(\((?:',string,'|[^()'']|(?1))*\))'  ⍝ group: (nested)parens
