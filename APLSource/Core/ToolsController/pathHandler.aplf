@@ -1,0 +1,10 @@
+ r←pathHandler(req path);ind;pathObj
+ r←''
+ ind←∆pathPatterns ⎕S 3⊢path
+ :If 0=≢ind
+     'Resource not found'req.Fail 401
+ :Else
+     ind+←⎕IO
+     pathObj←∆schema.paths.⍎ind⊃∆paths
+     r←methodHandler req path pathObj ind
+ :EndIf

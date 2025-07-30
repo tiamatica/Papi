@@ -1,0 +1,40 @@
+ r←GenerateStubs(schema folder);path;pathDecoded;pathObj;methods;method;methodObj;operationId;opName;∆;handlers;r;files;contents;filenames;fns
+⍝ Generate handler function stubs for schema into folder.
+⍝ Will not overwrite existing functions, only add missing ones.
+⍝ The stubs will need to be filled in separately to hande the requests.
+ :If ⎕NEXISTS folder
+     files←⊃⎕NINFO⍠1⊢folder,'/*.aplf'
+     filenames←2⊃¨⎕NPARTS files
+     contents←⊃¨⎕NGET¨files,⍥⊂¨1
+     handlers←{(⊃'⍝@path ([^ ]+)$'⎕S'\1'⊢⍵)(⊃'⍝@method ([^ ]+)$'⎕S'\1'⊢⍵)}¨contents
+     fns←{(⎕NS'').⎕FX ⍵}¨contents
+ :Else
+     3 ⎕MKDIR folder
+     handlers←⍬
+ :EndIf
+ r←0 4⍴''
+ :For path :In schema.paths.⎕NL ¯9
+     pathDecoded←1(7162⌶)path
+     pathObj←schema.paths.⍎path
+     methods←pathObj.⎕NL ¯9
+     :For method :In methods
+         :If (⊂pathDecoded method)∊handlers
+             r⍪←pathDecoded method((handlers⍳⊂pathDecoded method)⊃fns)'Existed'
+         :ElseIf 1
+             methodObj←pathObj.⍎method
+             :If 0=methodObj.⎕NC'operationId'
+                 operationId←method,pathDecoded
+             :Else
+                 operationId←methodObj.operationId
+             :EndIf
+             opName←'_'@{~⍵∊(⎕A),(¯1 ⎕C ⎕A),⎕D}operationId
+             ∆←,⊂' r←',opName,'(req parms)'
+             ∆,←⊂'⍝@path ',pathDecoded
+             ∆,←⊂'⍝@method ',method
+             ∆,←⊂' r←'''''
+             ∆,←⊂'⍝ '
+             (⊂∆)⎕NPUT folder,'/',opName,'.aplf'
+             r⍪←pathDecoded method opName'Created'
+         :EndIf
+     :EndFor
+ :EndFor

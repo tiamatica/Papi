@@ -1,0 +1,24 @@
+ new space;fns;handlers;inds;mask;pathObj;methods
+ :Access Public Instance
+ :Implements Constructor
+⍝ Initialise controller with space containing handlers for all operations
+ ⎕SIGNAL(9≠⎕NC'space')/'Constructor expects a namespace containing functions with REST handlers'
+
+⍝Define paths, operations and regex patterns
+ ∆serverPatterns←{6::⊂'' ⋄ ¯1↓¨regexFromPath¨⍵.servers.url}∆schema
+ ∆paths←∆schema.paths.⎕NL ¯9
+ ∆pathsDecoded←1(7162⌶)¨∆paths
+ ∆pathPatterns←regexFromPath¨∆pathsDecoded
+ ∆pathParams←'\{([^}]+?)\+?\}'⎕S'\1'¨∆pathsDecoded
+ ∆operations←⊃⍪/∆pathsDecoded{(⊂⍺),⍵}¨⍪¨(∆schema.paths.⍎¨∆paths).⎕NL ¯9
+
+⍝Define and validate handlers
+ fns←space.⎕NL ¯3
+ handlers←↑{(⊃'⍝@path ([^ ]+)$'⎕S'\1'⊢⍵)(⊃'⍝@method ([^ ]+)$'⎕S'\1'⊢⍵)}¨space.⎕NR¨fns
+ inds←handlers⍳∆operations[;1 2]
+ mask←inds≤≢handlers
+ ('Missing handlers for some operations: ',∊(⎕UCS 13),⍕(0=mask)⌿∆operations)⎕SIGNAL(0∊mask)/11
+ ∆handlerSpace←space
+ ∆operationHandlers←fns[inds]
+
+⍝

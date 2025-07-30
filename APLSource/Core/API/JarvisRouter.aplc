@@ -1,0 +1,36 @@
+:Class JarvisRouter
+    ⎕IO←⎕ML←1
+
+    :Field Private Instance ∆controllers
+
+    ∇ new
+      :Access Public Instance
+      :Implements Constructor
+      ∆controllers←⍬
+    ∇
+
+    ∇ Register controller
+      :Access Public Instance
+      ∆controllers,←controller
+    ∇
+
+    ∇ {jarvis}←ConfigureJarvis jarvis;commands
+      :Access Public Instance
+      ⍝ Configure jarvis instance to use controllers for handling REST requests
+      commands←∪⊃,/2⌷¨⍉¨∆controllers.OperationHandlers
+      jarvis.CodeLocation←⎕THIS
+      jarvis.Paradigm←'REST'
+      jarvis.RESTMethods←(⍪commands),⊂'RestHandler'
+    ∇
+
+    ∇ r←RestHandler req;rc;controller
+      :Access Public Instance
+      rc r←1 ''
+      :For controller :In ∆controllers
+          rc r←controller.RestHandler req
+          →(rc=0)/0
+      :EndFor
+      req.Fail 404
+     ⍝
+    ∇
+:EndClass ⍝ JarvisRouter

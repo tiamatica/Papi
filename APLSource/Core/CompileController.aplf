@@ -1,0 +1,15 @@
+ r←CompileController(schema toolsdir name);paths;pathsDecoded
+⍝ Generate a controller class for handling REST requests via Jarvis
+⍝ schema, object form of OpenAPI schema
+⍝ toolsdir, name of namespace with shared tools
+⍝ name, name of API
+ r←⍬
+ r,←⊂':Class ',name,'Rest'
+ r,←⊂':Include ##.',toolsdir
+ r,←⊂''
+ r,←⊂'    (⎕IO ⎕ML)←1'
+ r,←⊂''
+ r,←⊂'    :Field Private Shared ∆schema←⎕JSON ',Quote ⎕JSON schema
+ r,←⊂''
+ r,←⊂':EndClass ⍝ ',name,'Rest'
+⍝

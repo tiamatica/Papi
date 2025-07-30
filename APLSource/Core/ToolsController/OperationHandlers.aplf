@@ -1,0 +1,3 @@
+ r←OperationHandlers
+ :Access Public Instance
+ r←∆operations,(⊂(⍕∆handlerSpace),'.'),¨∆operationHandlers
