@@ -1,8 +1,8 @@
  msg←CompileServer args;schemaFile;clientdir;toolsdir;toolsrestdir;nsname;svcdir;schema;lines;handlerdir;opts
 ⍝ Compile OpenAPI schema and generate APL code for routing and handler stubs.
-⍝ schema, OpenAPI schema file
-⍝ serverdir, folder to put compiled classes into
-⍝ handlerdir, folder to put generated handler stubs in (optional)
+⍝ args[1]: schema, OpenAPI schema file
+⍝ args[2]: serverdir, folder to put compiled classes into
+⍝ args[3]: handlerdir, folder to put generated handler stubs in (optional)
  schemaFile clientdir handlerdir←3↑(⊆args),'' ''
  clientdir,←('\/'∊⍨⊃⌽clientdir)↓'/'
  toolsdir←'_OpenApiTools'
