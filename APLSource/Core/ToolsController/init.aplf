@@ -1,6 +1,4 @@
- new space;fns;handlers;inds;mask;pathObj;methods
- :Access Public Instance
- :Implements Constructor
+ init space;fns;handlers;inds;mask;pathObj;methods
 ⍝ Initialise controller with space containing handlers for all operations
  ⎕SIGNAL(9≠⎕NC'space')/'Constructor expects a namespace containing functions with REST handlers'
 

@@ -11,5 +11,11 @@
  r,←⊂''
  r,←⊂'    :Field Private Shared ∆schema←⎕JSON ',Quote ⎕JSON schema
  r,←⊂''
+ r,←⊂'    ∇ new space'
+ r,←⊂'      :Access Public Instance'
+ r,←⊂'      :Implements Constructor'
+ r,←⊂'      init space'
+ r,←⊂'    ∇'
+ r,←⊂''
  r,←⊂':EndClass ⍝ ',name,'Rest'
 ⍝
