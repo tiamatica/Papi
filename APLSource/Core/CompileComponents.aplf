@@ -1,0 +1,25 @@
+ CompileComponents(schema svcdir toolsdir);compnames;compsdir;compname;compdir;name;compobj;depth;lines
+ ⍝Compile components section of schema into APL classes
+ →(0=schema.⎕NC'components')/0
+ compnames←schema.components.schemas.⎕NL ¯9
+ compsdir←svcdir,'/components/schemas/'
+ :For compname :In compnames
+     compdir name←2↑⎕NPARTS 1 Tools.translatePath JsonConvertNames compname
+     :If ¯1=⎕NC name
+         ∘∘∘
+     :EndIf
+     3 ⎕MKDIR compsdir,compdir
+     compobj←schema.components.schemas.⍎compname
+     :If 0≠compobj.⎕NC'allOf'
+         compobj←CombineAllof compobj name
+     :EndIf
+     :If ∧/0≠compobj.⎕NC'type' 'properties'
+     :AndIf compobj.type≡'object'
+         depth←3+''≢compdir
+         lines←depth CompileObject toolsdir compobj name
+         (⊂lines)⎕NPUT(compsdir,compdir,name,'.aplc')1
+     :ElseIf 0≠compobj.⎕NC'enum'
+         lines←CompileEnum compobj name
+         (⊂lines)⎕NPUT(compsdir,compdir,name,'.aplc')1
+     :EndIf
+ :EndFor
