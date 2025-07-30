@@ -1,0 +1,28 @@
+ (rc parms)←parameterHandler(req path method ind);parameter;vals
+ rc←0
+ parms←⎕NS''
+ →(0=method.⎕NC'parameters')/0
+ :For parameter :In method.parameters
+     :If parameter.in≡'query'
+         vals←req.QueryParams{(⍺[;1]∊⊂⍵)/⍺[;2]}parameter.name
+     :ElseIf parameter.in≡'path'
+         vals←(ind⊃∆pathPatterns)⎕S('\',⍕(ind⊃∆pathParams)⍳⊂parameter.name)⊢path
+     :Else
+         ⍝ something else?
+     :EndIf
+     :If parameter.schema.type≢'array'
+         :If 0=≢vals
+             vals←⎕NULL
+         :Else
+             vals←⊃vals
+         :EndIf
+     :EndIf
+     :If vals≢⎕NULL
+         vals←parameter.schema parseVal vals
+     :ElseIf parameter.required≡⊂'true'
+         ('Missing required parameter: ',parameter.name)req.Fail 422
+         rc←1
+         →0
+     :EndIf
+     parameter.name parms.{⍎⍺,'←⍵'}vals
+ :EndFor

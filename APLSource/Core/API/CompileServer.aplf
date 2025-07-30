@@ -1,0 +1,32 @@
+ msg←CompileServer args;schemaFile;clientdir;toolsdir;toolsrestdir;nsname;svcdir;schema;lines;handlerdir;opts
+⍝ Compile OpenAPI schema and generate APL code for routing and handler stubs.
+⍝ schema, OpenAPI schema file
+⍝ serverdir, folder to put compiled classes into
+⍝ handlerdir, folder to put generated handler stubs in (optional)
+ schemaFile clientdir handlerdir←3↑(⊆args),'' ''
+ clientdir,←('\/'∊⍨⊃⌽clientdir)↓'/'
+ toolsdir←'_OpenApiTools'
+ toolsrestdir←'_OpenApiToolsRest'
+ nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
+ svcdir←clientdir,nsname
+ 3 ⎕NDELETE svcdir
+ 2 ⎕MKDIR svcdir
+ schema←⎕JSON⊃⎕NGET schemaFile
+ ##.CompileComponents schema svcdir toolsdir
+ :If 9=schema.⎕NC'paths'
+ :AndIf 0<≢schema.paths.⎕NL ¯9
+     lines←##.CompileController schema toolsrestdir nsname
+     (⊂lines)⎕NPUT(svcdir,'/',nsname,'Rest.aplc')1
+ :AndIf 0<≢handlerdir
+     r←##.GenerateStubs schema handlerdir
+ :EndIf
+ opts←⎕NS ⍬
+ opts.overwrite←1
+ 3 ⎕NDELETE clientdir∘,¨toolsdir toolsrestdir
+ {}opts ⎕SE.Link.Export ##.Tools(clientdir,toolsdir)
+ {}opts ⎕SE.Link.Export ##.ToolsController(clientdir,toolsrestdir)
+ 1 ⎕NDELETE clientdir,toolsdir,'/.linkconfig'
+ 1 ⎕NDELETE clientdir,toolsrestdir,'/.linkconfig'
+ msg←'OpenAPI Descriptions compiled into classes in ''',clientdir,''''
+ msg,←(0<≢handlerdir)/' and handlers in ''',handlerdir,''''
+⍝

@@ -1,0 +1,9 @@
+ (rc response)←RestHandler req;length;path;url
+ :Access Public Instance
+ response←''
+ length←⊃∆serverPatterns ⎕S 1⊢url←req.(Hostname,Endpoint)
+ rc←length=0
+ :If length>0
+     path←length↓url
+     response←pathHandler req path
+ :EndIf

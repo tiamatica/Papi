@@ -1,0 +1,5 @@
+ parseVal←{
+     ⍺.type≡'array':⍺.items ∇¨⍵
+     ⍺.type≡'string':⍵
+     ⍺.type≡'integer':⊃⊃(//)⎕VFI ⍵
+ }
