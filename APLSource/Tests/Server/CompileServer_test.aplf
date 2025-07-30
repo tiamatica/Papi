@@ -1,0 +1,10 @@
+ CompileServer_test;controller;∆
+
+ controller←⎕NEW PetStoreApi.PetstoreExpanded.PetstoreExpandedRest PetStoreServer
+ ∆←0 3⍴''
+ ∆⍪←'/pets' 'get' '#.OpenAPI.Tests.Server.PetStoreServer.findPets'
+ ∆⍪←'/pets' 'post' '#.OpenAPI.Tests.Server.PetStoreServer.addPet'
+ ∆⍪←'/pets/{id}' 'delete' '#.OpenAPI.Tests.Server.PetStoreServer.deletePet'
+ ∆⍪←'/pets/{id}' 'get' '#.OpenAPI.Tests.Server.PetStoreServer.find_pet_by_id'
+ 'Should generate expected handler stubs'Assert ∆≡controller.OperationHandlers
+⍝

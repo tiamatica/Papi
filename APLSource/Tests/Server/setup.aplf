@@ -1,0 +1,8 @@
+setup;opts;overwrite;schema;targetdir;handlersdir
+ schema←'./Testdata/petstore-expanded.json'
+ targetdir←'PetStoreApi'
+ handlersdir←'PetStoreServer'
+ {}##.##.Core.API.CompileServer schema targetdir handlersdir
+ (opts←⎕NS ⍬).overwrite←1
+ {}opts ⎕SE.Link.Import¨targetdir handlersdir
+ ⍝
