@@ -40,7 +40,7 @@
          baseUrl←{6::'' ⋄ ⊃⍵.servers.url}schema
          (pathObjs pathUrls names)←⊂''
          pathObjs←schema.paths.⍎¨paths
-         pathUrls←⊆##.JsonConvertNames paths
+         pathUrls←##.JsonConvertNames paths
          names←##.GenerateNamesFromPath pathUrls
          :For (name pathUrl pathObj) :In ↓⍉↑names pathUrls pathObjs
              url←baseUrl,pathUrl
