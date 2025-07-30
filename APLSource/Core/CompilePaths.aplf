@@ -1,0 +1,16 @@
+ CompilePaths(schema svcdir toolsdir);pathsdir;baseUrl;pathObjs;pathUrls;names;name;pathUrl;pathObj;url;depth;lines
+⍝Compile paths section of schema into APL classes
+ →(0=schema.⎕NC'paths')/0
+ pathsdir←svcdir,'/paths/'
+ 3 ⎕MKDIR pathsdir
+ baseUrl←{6::'' ⋄ ⊃⍵.servers.url}schema
+ (pathObjs pathUrls names)←⊂''
+ pathObjs←schema.paths.⍎¨paths
+ pathUrls←JsonConvertNames paths
+ names←GenerateNamesFromPath pathUrls
+ :For name pathUrl pathObj :InEach names pathUrls pathObjs
+     url←baseUrl,pathUrl
+     depth←2
+     lines←depth CompileService pathObj name url schema toolsdir
+     (⊂lines)⎕NPUT(pathsdir,name,'.aplc')1
+ :EndFor

@@ -1,58 +1,24 @@
- msg←targetdir Compile openapidir;schema;paths;path;pathName;name;schemaFiles;schemaFile;baseUrl;url;pathObj;lines;reqBody;args;ns;nsname;cmdns;svcdir;compnames;compname;compsdir;compdir;compobj;pathsdir;depth;toolsdir;opts;names;pathUrls;pathObjs;pathUrl
+ msg←Compile args;schemasdir;clientdir;schemaFiles;toolsdir;schemaFile;nsname;svcdir;schema;opts
 ⍝ Compile OpenAPI schemas and generate APL code
- targetdir,←('\/'∊⍨⊃⌽targetdir)↓'/'
- schemaFiles←⊃⎕NINFO⍠1⊢openapidir,'/*.json'
+⍝ schemasdir, folder with OpenAPI schema files
+⍝ clientdir, folder to put compiled classes into
+ schemasdir clientdir←args
+ clientdir,←('\/'∊⍨⊃⌽clientdir)↓'/'
+ schemaFiles←⊃⎕NINFO⍠1⊢schemasdir,'/*.json'
  toolsdir←'_OpenApiTools'
  :For schemaFile :In schemaFiles
      nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
-     svcdir←targetdir,nsname
+     svcdir←clientdir,nsname
      3 ⎕NDELETE svcdir
      2 ⎕MKDIR svcdir
      schema←⎕JSON⊃⎕NGET schemaFile
-     :If 0≠schema.⎕NC'components'
-         compnames←schema.components.schemas.⎕NL ¯9
-         compsdir←svcdir,'/components/schemas/'
-         :For compname :In compnames
-            compdir name←2↑⎕NPARTS 1 ##.Tools.translatePath ##.JsonConvertNames compname
-             :If ¯1=⎕NC name
-                 ∘∘∘
-             :EndIf
-             3 ⎕MKDIR compsdir,compdir
-             compobj←schema.components.schemas.⍎compname
-             :If 0≠compobj.⎕NC'allOf'
-                 compobj←##.CombineAllof compobj name
-             :EndIf
-             :If ∧/0≠compobj.⎕NC'type' 'properties'
-             :AndIf compobj.type≡'object'
-                 depth←3+''≢compdir
-                 lines←depth ##.CompileObject toolsdir compobj name
-                 (⊂lines)⎕NPUT(compsdir,compdir,name,'.aplc')1
-             :ElseIf 0≠compobj.⎕NC'enum'
-                 lines←##.CompileEnum compobj name
-                 (⊂lines)⎕NPUT(compsdir,compdir,name,'.aplc')1
-             :EndIf
-         :EndFor
-     :EndIf
-     :If 0≠schema.⎕NC'paths'
-     :AndIf 0≠≢paths←schema.paths.⎕NL ¯9
-         pathsdir←svcdir,'/paths/'
-         3 ⎕MKDIR pathsdir
-         baseUrl←{6::'' ⋄ ⊃⍵.servers.url}schema
-         (pathObjs pathUrls names)←⊂''
-         pathObjs←schema.paths.⍎¨paths
-         pathUrls←##.JsonConvertNames paths
-         names←##.GenerateNamesFromPath pathUrls
-         :For (name pathUrl pathObj) :In ↓⍉↑names pathUrls pathObjs
-             url←baseUrl,pathUrl
-             depth←2
-             lines←depth ##.CompileService pathObj name url schema toolsdir
-             (⊂lines)⎕NPUT(svcdir,'/paths/',name,'.aplc')1
-         :EndFor
-     :EndIf
+     ##.CompileComponents schema svcdir toolsdir
+     ##.CompilePaths schema svcdir toolsdir
  :EndFor
  opts←⎕NS ⍬
  opts.overwrite←1
- {}opts ⎕SE.Link.Export ##.Tools(targetdir,toolsdir)
- 1 ⎕NDELETE targetdir,toolsdir,'/.linkconfig'
- msg←'OpenAPI Descriptions compiled into classes in ''',targetdir,''''
+ 3 ⎕NDELETE clientdir,toolsdir
+ {}opts ⎕SE.Link.Export ##.Tools(clientdir,toolsdir)
+ 1 ⎕NDELETE clientdir,toolsdir,'/.linkconfig'
+ msg←'OpenAPI Descriptions compiled into classes in ''',clientdir,''''
 ⍝
