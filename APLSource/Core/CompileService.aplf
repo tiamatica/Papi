@@ -1,4 +1,4 @@
- r←depth CompileService(obj name url schema toolsdir);commands;cmdObj;command;reqBody;args;f;hasRequestBody;hasParameters;hasSharedParams;classname;classref;lines;hasNestClass;toolspath
+ r←depth CompileService(obj name baseurl path schema toolsdir);commands;cmdObj;command;reqBody;args;f;hasRequestBody;hasParameters;hasDescription;hasSummary;hasSharedParams;classname;classref;lines;hasNestClass;toolspath
  r←⍬
  r,←⊂':Class ',name
  toolspath←(∊depth/⊂'##.'),toolsdir
@@ -7,7 +7,8 @@
  r,←⊂'    (⎕IO ⎕ML)←1'
  r,←⊂''
  r,←⊂'    :Field Private Shared ∆schema←⎕JSON ',Quote ⎕JSON obj
- r,←⊂'    :Field Private Shared ∆url←',Quote url
+ r,←⊂'    :Field Private Shared ∆baseurl←',Quote baseurl
+ r,←⊂'    :Field Private Shared ∆path←',Quote path
 
  commands←obj.⎕NL ¯9
  hasSharedParams←⊃0≠obj.⎕NC'parameters'
@@ -51,8 +52,7 @@
      :If hasRequestBody
          :If hasNestClass←0≠⎕NC'cmdObj.requestBody.content.⍙application⍙47⍙json.schema.properties'
              classname←({(1 ⎕C⊃⍵),1↓⍵}command),'RequestBodyClass'
-             depth+←1
-             lines←depth CompileObject toolsdir cmdObj.requestBody.content.⍙application⍙47⍙json.schema classname
+             lines←(depth+1)CompileObject toolsdir cmdObj.requestBody.content.⍙application⍙47⍙json.schema classname
              classref←'''',classname,''''
          :Else
              classref←'∆schema.',command,'.requestBody.content'
