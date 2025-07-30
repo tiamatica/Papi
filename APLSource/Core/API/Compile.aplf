@@ -1,7 +1,7 @@
  msg←Compile args;schemasdir;clientdir;schemaFiles;toolsdir;schemaFile;nsname;svcdir;schema;opts
 ⍝ Compile OpenAPI schemas and generate APL code
-⍝ schemasdir, folder with OpenAPI schema files
-⍝ clientdir, folder to put compiled classes into
+⍝ args[1]: schemasdir, folder with OpenAPI schema files
+⍝ args[2]: clientdir,  folder to put compiled classes into
  schemasdir clientdir←args
  clientdir,←('\/'∊⍨⊃⌽clientdir)↓'/'
  schemaFiles←⊃⎕NINFO⍠1⊢schemasdir,'/*.json'
