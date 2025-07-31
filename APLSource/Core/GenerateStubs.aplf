@@ -1,4 +1,4 @@
- r←GenerateStubs(schema folder);path;pathDecoded;pathObj;methods;method;methodObj;operationId;opName;∆;handlers;r;files;contents;filenames;fns
+ r←GenerateStubs(schema folder);path;pathDecoded;pathObj;methods;method;methodObj;operationId;opName;∆;handlers;files;contents;filenames;fns
 ⍝ Generate handler function stubs for schema into folder.
 ⍝ Will not overwrite existing functions, only add missing ones.
 ⍝ The stubs will need to be filled in separately to hande the requests.
@@ -14,7 +14,7 @@
  :EndIf
  r←0 4⍴''
  :For path :In schema.paths.⎕NL ¯9
-     pathDecoded←1(7162⌶)path
+     pathDecoded←JsonConvertNames path
      pathObj←schema.paths.⍎path
      methods←pathObj.⎕NL ¯9
      :For method :In methods
