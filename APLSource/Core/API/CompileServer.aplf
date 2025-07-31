@@ -1,14 +1,14 @@
- msg←CompileServer args;schemaFile;clientdir;toolsdir;toolsrestdir;nsname;svcdir;schema;lines;handlerdir;opts
+ msg←CompileServer args;schemaFile;serverdir;toolsdir;toolsrestdir;nsname;svcdir;schema;lines;handlerdir;opts;r
 ⍝ Compile OpenAPI schema and generate APL code for routing and handler stubs.
 ⍝ args[1]: schema, OpenAPI schema file
 ⍝ args[2]: serverdir, folder to put compiled classes into
 ⍝ args[3]: handlerdir, folder to put generated handler stubs in (optional)
- schemaFile clientdir handlerdir←3↑(⊆args),'' ''
- clientdir,←('\/'∊⍨⊃⌽clientdir)↓'/'
+ schemaFile serverdir handlerdir←3↑(⊆args),'' ''
+ serverdir,←('\/'∊⍨⊃⌽serverdir)↓'/'
  toolsdir←'_OpenApiTools'
  toolsrestdir←'_OpenApiToolsRest'
  nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
- svcdir←clientdir,nsname
+ svcdir←serverdir,nsname
  3 ⎕NDELETE svcdir
  2 ⎕MKDIR svcdir
  schema←⎕JSON⊃⎕NGET schemaFile
@@ -22,11 +22,11 @@
  :EndIf
  opts←⎕NS ⍬
  opts.overwrite←1
- 3 ⎕NDELETE clientdir∘,¨toolsdir toolsrestdir
- {}opts ⎕SE.Link.Export ##.Tools(clientdir,toolsdir)
- {}opts ⎕SE.Link.Export ##.ToolsController(clientdir,toolsrestdir)
- 1 ⎕NDELETE clientdir,toolsdir,'/.linkconfig'
- 1 ⎕NDELETE clientdir,toolsrestdir,'/.linkconfig'
- msg←'OpenAPI Descriptions compiled into classes in ''',clientdir,''''
+ 3 ⎕NDELETE serverdir∘,¨toolsdir toolsrestdir
+ {}opts ⎕SE.Link.Export ##.Tools(serverdir,toolsdir)
+ {}opts ⎕SE.Link.Export ##.ToolsController(serverdir,toolsrestdir)
+ 1 ⎕NDELETE serverdir,toolsdir,'/.linkconfig'
+ 1 ⎕NDELETE serverdir,toolsrestdir,'/.linkconfig'
+ msg←'OpenAPI Descriptions compiled into classes in ''',serverdir,''''
  msg,←(0<≢handlerdir)/' and handlers in ''',handlerdir,''''
 ⍝
