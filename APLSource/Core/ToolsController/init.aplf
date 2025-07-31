@@ -1,6 +1,6 @@
  init space;fns;handlers;inds;mask;pathObj;methods
 ⍝ Initialise controller with space containing handlers for all operations
- ⎕SIGNAL(9≠⎕NC'space')/'Constructor expects a namespace containing functions with REST handlers'
+ 'Constructor expects a namespace containing functions with REST handlers'⎕SIGNAL(9≠⎕NC'space')/11
 
 ⍝Define paths, operations and regex patterns
  ∆serverPatterns←{6::⊂'' ⋄ ¯1↓¨regexFromPath¨⍵.servers.url}∆schema
