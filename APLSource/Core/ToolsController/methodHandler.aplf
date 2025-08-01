@@ -1,4 +1,4 @@
- r←methodHandler(req path pathObj ind);handlerFn;handlerInd;method;parms;rc
+ r←methodHandler(req path pathObj ind);handlerFn;handlerInd;method;parms;rc;pathDecoded
  r←''
  :If ~(⊂req.Method)∊pathObj.⎕NL ¯9
      'Method not allowed'req.Fail 405
@@ -7,10 +7,11 @@
  method←pathObj.⍎req.Method
  rc parms←parameterHandler req path method ind
  →(rc≠0)/0
- handlerInd←∆operations⍳path req.Method
+ pathDecoded←ind⊃∆pathsDecoded
+ handlerInd←∆operations⍳pathDecoded req.Method
  :If handlerInd>≢∆operations
      ('Operation not yet implemented: [',req.Method,' ',path,']')req.Fail 501
  :Else
-     handlerFn←(∆operations⍳path req.Method)⊃∆operationHandlers
+     handlerFn←handlerInd⊃∆operationHandlers
      r←(∆handlerSpace.⍎handlerFn)req parms
  :EndIf
