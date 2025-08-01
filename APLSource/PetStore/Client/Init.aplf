@@ -1,0 +1,11 @@
+ Init;apidir;r;opts
+⍝ Compile and import client classes from schema
+ apidir←'TestClasses'
+ r←##.##.Core.API.Compile'Testdata'apidir
+⍝ Import api
+ #.⎕EX apidir
+ opts←⎕NS''
+ opts.overwrite←1
+ {}opts ⎕SE.Link.Import('#.',apidir)apidir
+
+⍝

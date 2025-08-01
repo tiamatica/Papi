@@ -1,0 +1,44 @@
+ CallServer;clt;petApi;res;req;pets;pet2
+⍝ Compile and import api classes then run some tests
+ Init
+⍝ Make some calls to a local PetStore server
+ clt←##.##.HttpCommand.New''
+ clt.BaseURL←'http://localhost:8092/v2'
+ petApi←#.TestClasses.PetstoreExpanded.paths
+⍝ get all pets
+ ⎕←⎕JSON res←clt petApi.Pets.Get''
+⍝ create a dog named Swiffy
+ req←petApi.Pets.NewPostRequestBody
+ req.name←'Swiffy'
+ req.tag←'dogs'
+ ⎕←⎕JSON res←clt petApi.Pets.Post req
+⍝ create a cat named Toffee
+ req.name←'Toffee'
+ req.tag←'cats'
+ ⎕←⎕JSON res←clt petApi.Pets.Post req
+⍝ create a horse named Buster
+ req.name←'Buster'
+ req.tag←'horses'
+ ⎕←⎕JSON res←clt petApi.Pets.Post req
+⍝ create a cat named Pixie
+ req.name←'Pixie'
+ req.tag←'cats'
+ ⎕←⎕JSON res←clt petApi.Pets.Post req
+⍝ get all cats
+ ⎕←⎕JSON res←clt petApi.Pets.Get⊂'cats'
+⍝ get all dogs and horses
+ ⎕←⎕JSON res←clt petApi.Pets.Get⊂'dogs' 'horses'
+⍝ get all cats and dogs limit to 2 pets
+ ⎕←⎕JSON res←clt petApi.Pets.Get('cats' 'dogs')2
+ pets←3⊃res
+⍝ get second pet
+ pet2←2⊃pets
+ ⎕←⎕JSON res←clt petApi.PetsKey.Get pet2.id
+⍝ delete pet
+ ⎕←⎕JSON res←clt petApi.PetsKey.Delete pet2.id
+⍝ get all pets
+ ⎕←⎕JSON res←clt petApi.Pets.Get''
+
+⍝ Remove api classes
+ #.⎕EX'TestClasses'
+⍝
