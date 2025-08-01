@@ -17,7 +17,12 @@
     },
     "servers": [
       {
-        "url": "https://petstore.swagger.io/v2"
+        "url": "https://petstore.swagger.io/v2",
+        "description": "Production server"
+      },
+      {
+        "url": "http://localhost:8092/v2",
+        "description": "Local development server"
       }
     ],
     "paths": {
