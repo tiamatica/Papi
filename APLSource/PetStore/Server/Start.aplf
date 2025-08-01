@@ -1,0 +1,9 @@
+ Start;jr
+ Init
+ PETS←0 3⍴''
+ jr←⎕NEW ##.##.Core.API.JarvisRouter
+ jr.Register ⎕NEW #.PetStoreApi.PetstoreExpanded.PetstoreExpandedRest ⎕THIS
+ jarvis←jr.ConfigureJarvis #.PetStoreApi.Jarvis.New''
+ jarvis.Port←8092
+ jarvis.Start
+⍝

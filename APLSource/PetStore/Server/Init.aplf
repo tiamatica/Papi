@@ -1,0 +1,15 @@
+ Init;r;apidir;thisdir;schemafile;opts
+⍝ Initialise PetStore server code
+⍝ Compile schema
+ schemafile←'Testdata/petstore-expanded.json'
+ apidir←'PetStoreApi'
+ thisdir←⊃⎕NPARTS 4⊃5179⌶⊃⎕XSI
+ r←##.##.Core.API.CompileServer schemafile apidir thisdir
+⍝ Import api
+ #.⎕EX apidir
+ opts←⎕NS''
+ opts.overwrite←1
+ {}opts ⎕SE.Link.Import('#.',apidir)apidir
+⍝ Load Jarvis
+ {}⎕SE.Tatin.LoadPackages'Jarvis'('#.',apidir)
+ ⍝

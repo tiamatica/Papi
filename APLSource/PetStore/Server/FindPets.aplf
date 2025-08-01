@@ -1,0 +1,13 @@
+ r←FindPets(req parms);mask;res
+⍝@path /pets
+⍝@method get
+ mask←(≢PETS)⍴1
+ :If 0<≢parms.tags
+     mask←PETS[;3]∊parms.tags
+ :EndIf
+ :If parms.limit≢⎕NULL
+     mask∧←parms.limit≥+\mask
+ :EndIf
+ res←mask⌿PETS
+ r←⎕JSON ⎕JSON⊂3(res('id' 'name' 'tag'))
+⍝

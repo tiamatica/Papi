@@ -1,0 +1,6 @@
+ Stop
+⍝ Stop jarvis server and remove api classes
+ jarvis.Stop
+ #.⎕EX'PetStoreApi'
+ 3 ⎕NDELETE'PetStoreApi'
+⍝
