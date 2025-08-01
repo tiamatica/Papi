@@ -1,4 +1,4 @@
- r←clt execute(command cmdObj args);qp;qpmask;urlmask;mask;res;paramscnt;paramnames;hasParams;hasReqBody;in;rc;resp;csrf;etag;payload;hasSharedParams;paramobjs;msg
+r←clt execute(command cmdObj args);qp;qpmask;urlmask;mask;res;paramscnt;paramnames;hasParams;hasReqBody;in;rc;resp;csrf;etag;payload;hasSharedParams;paramobjs;msg;explode;vals
 ⍝clt:  obj, HttpClient instance
  clt.Command←command
  clt.BaseURL{0=≢⍺:⍵ ⋄ ⍺}←∆baseurl
@@ -14,6 +14,7 @@
      qp←paramscnt↑args,paramscnt⍴⊂''
      paramnames←paramobjs.name,hasReqBody/⊂'requestBody'
      in←paramobjs.in,hasReqBody/⊂'body'
+     explode←({0::1 ⋄ ⍵.explode≢⊂'false'}¨paramobjs),hasReqBody/1
      qpmask←in∊⊂'query'
      urlmask←in∊⊂'path'
      :If ∨/urlmask
@@ -21,7 +22,8 @@
      :EndIf
      mask←qpmask∧~qp∊⊂''
      :If ∨/mask
-         clt.URL,←'?',clt.UrlEncode mask⌿paramnames,⍪qp
+         vals←explode{(⍺=0)∧2=≡⍵:1↓∊',',¨⍵ ⋄ (⍺=1)∧1=≡⍵:','(≠⊆⊢)⍵ ⋄ ⍵}¨qp
+         clt.URL,←'?',clt.UrlEncode⊃⍪/mask/paramnames{(⊂⍺),⍪⊆⍵}¨vals
      :EndIf
      :If hasReqBody
          payload←(in⍳⊂'body')⊃qp
