@@ -1,0 +1,7 @@
+ r←AddPet(req parms);mask;pet;res
+⍝@path /pets
+⍝@method post
+ pet←⎕JSON req.Body
+ PETS⍪←(pet.id←1+≢PETS)pet.name pet.tag
+ r←pet
+⍝

@@ -1,0 +1,6 @@
+ r←FindPetById(req parms)
+⍝@path /pets/{id}
+⍝@method get
+ r←⎕NS''
+ r.(id name tags)←PETS[PETS[;1]⍳parms.id;]
+⍝
