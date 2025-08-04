@@ -5,7 +5,7 @@
  schemasdir clientdir←args
  clientdir,←('\/'∊⍨⊃⌽clientdir)↓'/'
  schemaFiles←⊃⎕NINFO⍠1⊢schemasdir,'/*.json'
- toolsdir←'_OpenApiTools'
+ toolsdir←'_PapiTools'
  :For schemaFile :In schemaFiles
      nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
      svcdir←clientdir,nsname
