@@ -6,10 +6,10 @@
  ⎕SE.Cider.OpenProject cfg
 
  :Trap 0
-     cfgMutsu←#.OpenAPI.Mutsu.NewConfiguration
-     cfgMutsu.TestSpaces←#.OpenAPI.Tests.UnitTests
-     cfgMutsu.ReportType←#.OpenAPI.Mutsu.REPORTTYPE.GITHUB
-     #.OpenAPI.Mutsu.RunTests cfgMutsu
+     cfgMutsu←#.Papi.Mutsu.NewConfiguration
+     cfgMutsu.TestSpaces←#.Papi.Tests.UnitTests
+     cfgMutsu.ReportType←#.Papi.Mutsu.REPORTTYPE.GITHUB
+     #.Papi.Mutsu.RunTests cfgMutsu
  :Else
      ⎕←↑⎕DM
      ⎕OFF 1

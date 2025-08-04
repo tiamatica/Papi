@@ -18,7 +18,7 @@ git_tag←2 ⎕NQ '.' 'GetEnvironment' 'TAG_VERSION'
  ⎕←'Build version: ',version
  root←⊃1 ⎕NPARTS ''
  ⎕←'Working directory: ',root
- ⎕WSID←root,'OpenAPI'  
+ ⎕WSID←root,'Papi'  
  ⎕←'Establish Tatin in ⎕SE'
  ⎕←⎕SE.Tatin.Version
  ⎕←'Build package'
