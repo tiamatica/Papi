@@ -7,7 +7,7 @@
      r←''
  :Else
      req.Fail 404
-     err←⎕NEW #.TestClasses.PetstoreExpanded.components.schemas.Error
+     err←⎕NEW #.PetStoreApi.PetstoreExpanded.components.schemas.Error
      err.code←(1+hits>1)⊃1 2
      err.message←(1+hits>1)⊃'Record not found' 'More than one record found with same id'
      r←⎕UCS'UTF-8'⎕UCS ⎕JSON err.toObject
