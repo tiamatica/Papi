@@ -5,8 +5,8 @@
 ⍝ args[3]: handlerdir, folder to put generated handler stubs in (optional)
  schemaFile serverdir handlerdir←3↑(⊆args),'' ''
  serverdir,←('\/'∊⍨⊃⌽serverdir)↓'/'
- toolsdir←'_OpenApiTools'
- toolsrestdir←'_OpenApiToolsRest'
+ toolsdir←'_PapiTools'
+ toolsrestdir←'_PapiToolsRest'
  nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
  svcdir←serverdir,nsname
  3 ⎕NDELETE svcdir
