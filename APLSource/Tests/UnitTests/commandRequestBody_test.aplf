@@ -1,4 +1,4 @@
- commandRequestBody_test;oaddir;schemaFiles;schemaFile;nsname;schema;count_reqbods;count_functions;namespaces;ns;endpoints;ep;inst;reqbody;compinst;funcs
+ commandRequestBody_test;oaddir;schemaFiles;schemaFile;nsname;schema;count_reqbods;count_functions;namespaces;ns;endpoints;ep;reqbody;compinst;funcs
 
  ⍝ Compare count of request bodies in OAD with count of functions to get a request body in generated classes.
  oaddir←'./Testdata'
@@ -7,15 +7,15 @@
      nsname←'-(.)'⎕R'\u1'⊢'-',2⊃⎕NPARTS schemaFile
      schema←⎕JSON⊃⎕NGET schemaFile
      count_reqbods←+⌿∊{6::0 ⋄ ⍵.paths.(⍎¨⎕NL ¯9).(⍎¨⎕NL ¯9).(0≠⎕NC'requestBody')}schema
-     count_functions←+⌿{6::0 ⋄ ⍵.paths.(⍎¨⎕NL ¯9).(≢'RequestBody$'⎕S'%'⊢⎕NL ¯3)}TestClasses⍎nsname
+     count_functions←+⌿{6::0 ⋄ ⍵.(⍎¨⎕NL ¯9.4).(≢'RequestBody$'⎕S'%'⊢⎕NL ¯3)}TestClasses⍎nsname
      Assert count_reqbods=count_functions
  :EndFor
 
  ⍝ Can the commandRequestBody functions be called for each endpoint without crashing.
  namespaces←TestClasses.(⍎¨⎕NL ¯9)
- namespaces/⍨←namespaces.(⊃9=⎕NC'paths')
+ namespaces/⍨←namespaces.(0<≢⎕NL ¯9.4)
  :For ns :In namespaces
-     endpoints←{0≠≢ep←⍵.paths.(⎕NL ¯9):⍎¨(⊂'⍵.paths.'),¨ep ⋄ ⍬}ns
+     endpoints←{0≠≢ep←⍵.(⎕NL ¯9.4):⍎¨(⊂'⍵.'),¨ep ⋄ ⍬}ns
      :For ep :In endpoints
          :If 0<≢funcs←ep.('RequestBody$'⎕S'%'⊢⎕NL ¯3)
              inst←⎕NEW ep
@@ -25,13 +25,11 @@
  :EndFor
 
  ⍝ Request body with ref
- inst←⎕NEW TestClasses.PetstoreExpanded.paths.Pets
- reqbody←inst.NewPostRequestBody
+ reqbody←TestClasses.PetstoreExpanded.AddPet.NewRequestBody
  compinst←⎕NEW TestClasses.PetstoreExpanded.components.schemas.NewPet
- Assert compinst.(⊃⊃⎕CLASS ⎕THIS)≡reqbody.(⊃⊃⊃⎕CLASS ⎕THIS)
+ Assert (⎕CLASS compinst)≡(⎕CLASS reqbody)
 
  ⍝ Request body with properties
- inst←⎕NEW TestClasses.Reqres.paths.Login
- reqbody←inst.NewPostRequestBody
- compinst←⎕NEW TestClasses.Reqres.paths.Login.PostRequestBodyClass
- Assert compinst.(⊃⊃⎕CLASS ⎕THIS)≡reqbody.(⊃⊃⊃⎕CLASS ⎕THIS)
+ reqbody←TestClasses.Reqres.PostLogin.NewRequestBody
+ compinst←⎕NEW TestClasses.Reqres.PostLogin.RequestBodyClass
+ Assert (⎕CLASS compinst)≡(⎕CLASS reqbody)

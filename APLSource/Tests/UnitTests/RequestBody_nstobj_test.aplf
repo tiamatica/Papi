@@ -1,5 +1,5 @@
  RequestBody_nstobj_test;inst;rqb
- inst←⎕NEW TestClasses.TestODA.paths.Nestrqbody
- rqb←inst.NewPostRequestBody
- Assert #.Papi.Tests.UnitTests.TestClasses.TestODA.paths.Nestrqbody.PostRequestBodyClass.objectClass≡rqb.object.(⊃⊃⎕CLASS ⎕THIS)
+ inst←⎕NEW TestClasses.TestODA.CreateNestrqbody
+ rqb←inst.NewRequestBody
+ Assert #.Papi.Tests.UnitTests.TestClasses.TestODA.CreateNestrqbody.RequestBodyClass.objectClass≡rqb.object.(⊃⊃⎕CLASS ⎕THIS)
  Assert∧/'description' 'name' 'summary'∊rqb.object.⎕NL ¯2
