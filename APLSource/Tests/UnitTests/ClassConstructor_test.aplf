@@ -2,4 +2,4 @@
  classfolder←TestClasses.PetstoreExpanded
  ⍝ Can the constructors be called without errors.
  (0 Try ⎕NEW)¨classfolder.components.schemas.(⍎¨⎕NL ¯9)
- (0 Try ⎕NEW)¨classfolder.paths.(⍎¨⎕NL ¯9)
+ (0 Try ⎕NEW)¨classfolder.(⍎¨⎕NL ¯9.4)

@@ -7,4 +7,4 @@
  ⍝ Test if all components and paths were compiled into classes
  schema←⎕JSON⊃⎕NGET openapidir,'/','petstore-expanded.json'
  Assert(≢TestClasses.PetstoreExpanded.components.schemas.⎕NL ¯9.4)=≢schema.components.schemas.⎕NL ¯9
- Assert(≢TestClasses.PetstoreExpanded.paths.⎕NL ¯9)=≢schema.paths.⎕NL ¯9
+ Assert(≢TestClasses.PetstoreExpanded.⎕NL ¯9.4)=+/schema.paths.(⍎¨⎕NL ¯9).(≢⎕NL ¯9)
