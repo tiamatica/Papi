@@ -1,17 +1,24 @@
- CompilePaths(schema svcdir toolsdir);paths;pathsdir;baseUrl;pathObjs;pathUrls;names;name;pathUrl;pathObj;depth;lines
+ CompilePaths(schema svcdir toolsdir);paths;baseUrl;pathObjs;pathUrls;name;pathUrl;depth;lines;command;cmdObj;cmds;cmdMatrix;operationIds;cmd;pathObj;hasParameters
 ⍝Compile paths section of schema into APL classes
  →(0=schema.⎕NC'paths')/0
  paths←schema.paths.⎕NL ¯9
  →(0=≢paths)/0
- pathsdir←svcdir,'/paths/'
- 3 ⎕MKDIR pathsdir
  baseUrl←{6::'' ⋄ ⊃⍵.servers.url}schema
- (pathObjs pathUrls names)←⊂''
+ (pathObjs pathUrls)←⊂''
  pathObjs←schema.paths.⍎¨paths
  pathUrls←JsonConvertNames paths
- names←GenerateNamesFromPath pathUrls
- :For name pathUrl pathObj :InEach names pathUrls pathObjs
-     depth←2
-     lines←depth CompileService pathObj name baseUrl pathUrl schema toolsdir
-     (⊂lines)⎕NPUT(pathsdir,name,'.aplc')1
+ cmds←pathObjs.⎕NL ¯9
+ cmdMatrix←⊃⍪/pathUrls{(⊂⍺),⍵}¨pathObjs{⍵,⍺,⍪⍺⍎¨⍵}¨cmds
+ operationIds←(,/cmdMatrix[;2 1]){0=⍵.⎕NC'operationId':⍺ ⋄ ⍵.operationId}¨cmdMatrix[;4]
+ cmdMatrix,←GenerateNamesFromPath operationIds
+ :For pathUrl cmd pathObj cmdObj name :In ↓cmdMatrix
+     hasParameters←0<(pathObj cmdObj).⎕NC⊂⊂'parameters'
+     :If >/hasParameters
+         cmdObj.parameters←pathObj.parameters
+     :ElseIf ∧/hasParameters
+         cmdObj.parameters,←pathObj.parameters
+     :EndIf
+     depth←1
+     lines←depth CompileOperation cmd cmdObj name baseUrl pathUrl schema toolsdir
+     (⊂lines)⎕NPUT(svcdir,'/',name,'.aplc')1
  :EndFor
