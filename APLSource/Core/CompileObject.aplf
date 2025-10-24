@@ -1,4 +1,4 @@
- r←depth CompileObject(toolsdir obj name);propnames;properties;mask;f;nstdclassmask;classnames;toolspath;componentspath
+ r←depth CompileObject(toolsdir obj name);arrayobjmask;propnames;properties;mask;f;nstdclassmask;classnames;toolspath;componentspath
  r←⍬
  r,←⊂':Class ',name
  toolspath←(∊depth/⊂'##.'),toolsdir
@@ -18,6 +18,8 @@
  propnames←obj.properties.⎕NL ¯9
  properties←obj.properties⍎¨propnames
  nstdclassmask←{⍵.(0≠⎕NC'type'):⊃⍵.(0≠⎕NC'properties')∧⍵.type≡'object' ⋄ 0}¨properties
+ arrayobjmask←{6::0 ⋄ (⍵.type≡'array')∧(⍵.items.type≡'object')∧0<≢⍵.items.properties}¨properties
+ nstdclassmask∨←arrayobjmask
  classnames←nstdclassmask{⍺:⍵,'Class' ⋄ ''}¨propnames
  r,←⊂'     ∇ make0'
  r,←⊂'      :Access Public Instance'
@@ -48,9 +50,13 @@
      r,←⊂''
      r,←⊂'    :Property Simple ',1↓∊',',¨(mask/propnames),¨⊂'Add'
      r,←⊂'    :Access Public Instance'
-     r,←⊂'        ∇ r←get args;ind'
+     r,←⊂'        ∇ r←get args;ind;class'
      r,←⊂'          ind←∆propertyNames⍳⊂¯3↓args.Name'
-     r,←⊂'          r←(⊃⎕RSI).⎕NEW getComponent(ind⊃∆properties).items'
+     r,←⊂'          :If 0<≢class←ind⊃nestedObjnames'
+     r,←⊂'              r←⎕NEW⍎class'
+     r,←⊂'          :Else'
+     r,←⊂'              r←(⊃⎕RSI).⎕NEW getComponent(ind⊃∆properties).items'
+     r,←⊂'          :EndIf'
      r,←⊂'          (ind⊃fieldValues),←r'
      r,←⊂'          (ind⊃isSet)←1'
      r,←⊂'        ∇'
@@ -58,6 +64,9 @@
  :EndIf
  r,←⊂''
  :If ∨/nstdclassmask
+     :If ∨/arrayobjmask
+         (arrayobjmask/properties)←(arrayobjmask/properties).items
+     :EndIf
      depth+←1
      f←depth CompileObject¨↓(⊂toolsdir),nstdclassmask⌿properties,⍪classnames
      r,←¨{(⊂'    '),¨(⊂''),⍵}¨f
