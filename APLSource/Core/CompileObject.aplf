@@ -42,7 +42,6 @@
  r,←⊂'          (ind⊃isSet)←1'
  r,←⊂'        ∇'
  r,←⊂'    :EndProperty'
- properties←obj.properties⍎¨propnames
  mask←properties.(∧/0≠⎕NC'type' 'items')
  :If ∨/mask
      mask←mask\(mask/properties).type∊⊂'array'
