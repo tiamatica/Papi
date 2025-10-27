@@ -7,13 +7,11 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
       
 jobs: 
   Build-package:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Check out code
