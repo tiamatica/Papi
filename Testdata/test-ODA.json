@@ -402,6 +402,23 @@
             },
             "hex": {
               "type": "string"
+            },
+            "TotalCost": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cost": {
+                    "type": "string"
+                  },
+                  "primary": {
+                    "type": "string"
+                  },
+                  "currency": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           }
         },

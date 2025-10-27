@@ -1,0 +1,5 @@
+ arrayProps_test;c;rqb
+ rqb←TestClasses.TestODA.AddThing.NewRequestBody
+ c←rqb.colour
+ (0 Try⍎)'c.TotalCostAdd'
+ Assert 1=≢c.TotalCost
